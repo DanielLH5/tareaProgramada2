@@ -212,8 +212,7 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
 
 def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
     misPokemons = ""
-    for i in range(len(listaPokemons)):
-        pokemon = listaPokemons[i]
+    for pokemon in listaPokemons:
         if pokemon in listaRandomAtrapados:
             misPokemons += f"{pokemon.strip("^a").strip("^h")}^a\n" # Usar strip para evitar valores viejos
         else:

@@ -11,6 +11,28 @@ def openSearch():
     button1.config(state="active")
     print("Hola Daniel!")
 """
+##################################################
+# 14. Salir
+##################################################
+
+def close():
+    root.quit()
+
+##################################################
+# 5. Descarga
+##################################################
+
+
+
+##################################################
+# 4. Detalle
+##################################################
+
+
+
+##################################################
+# 3. Pokédex
+##################################################
 """
 def obtenerPokemons(inicio):
     pokemons = leeTxt(misPokemonsTxt) #suponemos que es un str
@@ -68,47 +90,167 @@ def ventanaPokedex():
     botonAnterior = tk.Button(root, text="<-", command=lambda:anteriror(root, framePokemons))
     botonAnterior.pack(pady=10)
 """
+##################################################
+# Ventanas Secundarias
+##################################################
+def ventanaRetroalimentacion(mensaje):
+    root = tk.Toplevel()
+    root.geometry("250x100")
+    root.title("Retroalimentación")
 
-def buscarExistenciaPokemon(listaPokemones, pokemon):
-    if pokemon in listaPokemones:
+    title = tk.Label(root, text=mensaje, padx=10, pady=10)
+    title.pack()
+    
+    boton = tk.Button(root, text="Aceptar", command=root.destroy)
+    boton.pack(pady=10)
+
+##################################################
+# 2. Atrapar
+##################################################
+
+PUNTOS_SALUD = "hp"
+ATAQUE = "attack"
+ATAQUE_ESPECIAL = "special-attack"
+DEFENSA = "defense"
+DEFENSA_ESPECIAL = "special-defense"
+VELOCIDAD = "speed"
+    
+def validarShiny(info):
+    shiny = info['sprites']['front_shiny']
+    print(shiny)
+    if shiny is None:
+        return False
+    else:
         return True
-    return False
 
-def obtenerIdAtrapados(listaAtrapados):
-    idAtrapados = []
-    for pokemon in listaAtrapados:
-        infoPokemonSeparado = pokemon.split("^")
-        idAtrapados.append(infoPokemonSeparado[0])
-    print(idAtrapados)
+def obtenerPeso(peso):
+    try:
+        return int(peso) * 10
+    except ValueError:
+        return 0
+    
+def obtenerAltura(altura):
+    try:
+        return int(altura) * 10
+    except ValueError:
+        return 0
+    
+def obtenerTotalEstadistica(info):
+    salud = obtenerEstadisticaPuntoSalud(info)
+    ataque = obtenerEstadisticaAtaque(info)
+    defensa = obtenerEstadisticaDefensa(info)
+    ataqueEspecial = obtenerEstadisticaAtaqueEspecial(info)
+    defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
+    velocidad = obtenerEstadisticaVelocidad(info)
+    return salud + ataque + defensa + ataqueEspecial + defensaEspecial + velocidad
+
+def obtenerEstadistica(info, tipo):
+    estadisticas = info['stats']
+    for estadistica in estadisticas:
+        if estadistica['stat']['name'] == tipo:
+            return estadistica['base_stat']
+    return 0
+
+def obtenerEstadisticaPuntoSalud(info):
+    return obtenerEstadistica(info, PUNTOS_SALUD)
+
+def obtenerEstadisticaAtaque(info):
+    return obtenerEstadistica(info, ATAQUE)
+
+def obtenerEstadisticaDefensa(info):
+    return obtenerEstadistica(info, DEFENSA)
+
+def obtenerEstadisticaAtaqueEspecial(info):
+    return obtenerEstadistica(info, ATAQUE_ESPECIAL)
+
+def obtenerEstadisticaDefensaEspecial(info):
+    return obtenerEstadistica(info, DEFENSA_ESPECIAL)
+
+def obtenerEstadisticaVelocidad(info):
+    return obtenerEstadistica(info, VELOCIDAD)
+
+def obtenerTipo(info, indice):
+    try:
+        return info['types'][indice]['type']['name']
+    except IndexError:
+        return "" # Mostrar un String vacio cuando no encuentra el indice
+    
+def obtenerImagen(info):
+    shiny = validarShiny(info)
+    if shiny == True:
+        return info['sprites']['front_shiny']
+    else:
+        return info['sprites']['front_default']
+
+def obtenerPokemonsAtrapados(listaRandomAtrapados):
+    # Crear el diccionario
+    diccionarioPokemons = {}
+    for pokemon in listaRandomAtrapados:
+        id = pokemon.split("^")[0] # Obtener el id del Pokemon
+        respuesta = requests.get(f"https://pokeapi.co/api/v2/pokemon/{id}")
+        if respuesta.ok:
+            info = respuesta.json()
+            salud = obtenerEstadisticaPuntoSalud(info)
+            ataque = obtenerEstadisticaAtaque(info)
+            defensa = obtenerEstadisticaDefensa(info)
+            ataqueEspecial = obtenerEstadisticaAtaqueEspecial(info)
+            defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
+            velocidad = obtenerEstadisticaVelocidad(info)
+            totalStats = obtenerTotalEstadistica(info)
+            info = respuesta.json()
+            # Asignar el valor al pokemon
+            diccionarioPokemons[int(id)] = [info['name'], # nombre
+                                             (validarShiny(info), obtenerPeso(info['weight']), obtenerAltura(info['height'])), # (esShiny, peso, altura)
+                                             [totalStats, (salud, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad)], # [totalEstad, (PS, A, D, AE, DE, V)]
+                                             (obtenerTipo(info, 0), obtenerTipo(info, 1)), # (listaDeTipos, listaDeTipos)
+                                              obtenerImagen(info) # url
+                                            ]
+        else:
+            print("Error", respuesta.status_code)
+    # Guardar el archivo **
+    grabaTxt(misPokemonsAtrapadosTxt, str(diccionarioPokemons))
+
+def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
+    misPokemons = ""
+    for i in range(len(listaPokemons)):
+        pokemon = listaPokemons[i]
+        if pokemon in listaRandomAtrapados:
+            misPokemons += f"{pokemon.strip("^a").strip("^h")}^a\n" # Usar strip para evitar valores viejos
+        else:
+            misPokemons += f"{pokemon.strip("^a").strip("^h")}^h\n" # Usar strip para evitar valores viejos
+    # Guardar los cambios en el archivo "Mis Pokemons"
+    grabaTxt(misPokemonsTxt, misPokemons)
 
 def atraparPokemons(porcentaje):
-    pokemones = leeTxt(misPokemonsTxt)
-    listaPokemones = pokemones.split("\n")[:-1]
-    atrapados = int(len(listaPokemones) / 100) * int(porcentaje)
-    listaAtrapados = random.sample(listaPokemones, atrapados)
-    print(listaAtrapados)
-    print(len(listaAtrapados))
-    misPokemones = ""
-    for i in range(len(listaPokemones)):
-        pokemon = listaPokemones[i]
-        encontrado = buscarExistenciaPokemon(listaAtrapados, pokemon)
-        if encontrado:
-            misPokemones += f"{pokemon}^a\n"
-        else:
-            misPokemones += f"{pokemon}^h\n"
-    grabaTxt(misPokemonsTxt, misPokemones)
-    idAtrapados = obtenerIdAtrapados(listaAtrapados)
+    archivoPokemons = leeTxt(misPokemonsTxt)
+    listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
+    print(listaPokemons)
+    # Obtener la cantidad de Pokemons atrapados, según el porcentaje
+    cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
+    # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados
+    listaRandomAtrapados = random.sample(listaPokemons, cantidadPokemonsAtrapados)
+    actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
+    obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     
 def validarPorcentaje(porcentaje):
     try:
         if int(porcentaje) < 0 or int(porcentaje) > 100:
-            mensaje = "El porcentaje debe de ser entre 0 y 100." #Manejar solo enteros.
-            return ventanaRetroalimentacion(mensaje)
+            return (False, "El porcentaje debe de ser entre 0 y 100.")
         else:
-            return atraparPokemons(porcentaje)
+            return (True, "")
     except ValueError:
-        mensaje = "El valor tiene que ser un número entero."
+        return (False, "El valor tiene que ser un número entero.")
+
+def calcularPorcentaje(porcentaje):
+    porcentajeValido = validarPorcentaje(porcentaje)
+    if porcentajeValido[0] == True:
+        return atraparPokemons(porcentaje)
+    else:
+        mensaje = porcentajeValido[1] # Obtener el mensaje de error
         return ventanaRetroalimentacion(mensaje)
+
+def limpiarEntradaPorcentaje():
+    porcentaje.set("")
 
 def ventanaAtrapar():
     ventana = tk.Toplevel()
@@ -128,49 +270,16 @@ def ventanaAtrapar():
     contenedorBotones = tk.Frame(ventana, pady=15, padx=5)
     contenedorBotones.pack()
 
-    botonAtrapar = tk.Button(contenedorBotones, text="Atrapar", width=30, command=lambda: validarPorcentaje(porcentaje.get()))
+    botonAtrapar = tk.Button(contenedorBotones, text="Atrapar", width=30, command=lambda: calcularPorcentaje(porcentaje.get()))
     botonAtrapar.grid(row=0, column=0, pady=5)
-    botonLimpiar = tk.Button(contenedorBotones, text="Limpiar", width=30, command=lambda: validarEntradaBuscar(porcentaje.get()))
+    botonLimpiar = tk.Button(contenedorBotones, text="Limpiar", width=30, command=limpiarEntradaPorcentaje)
     botonLimpiar.grid(row=0, column=1, pady=5)
 
     ventana.mainloop()
 
-def validarBotones():
-    if leeTxt(misPokemonsTxt) == False: 
-        button2.config(state="disabled")
-        button3.config(state="disabled")
-        button4.config(state="disabled")
-        button5.config(state="disabled")
-        button6.config(state="disabled")
-        button7.config(state="disabled")
-        button8.config(state="disabled")
-        button9.config(state="disabled")
-        button10.config(state="disabled")
-        button11.config(state="disabled")
-        button12.config(state="disabled")
-    else:
-        button2.config(state="active")
-        button3.config(state="active")
-        button4.config(state="active")
-        button5.config(state="active")
-        button6.config(state="active")
-        button7.config(state="active")
-        button8.config(state="active")
-        button9.config(state="active")
-        button10.config(state="active")
-        button11.config(state="active")
-        button12.config(state="active")
-
-def ventanaRetroalimentacion(mensaje):
-    root = tk.Toplevel()
-    root.geometry("250x100")
-    root.title("Retroalimentación")
-
-    title = tk.Label(root, text=mensaje, padx=10, pady=10)
-    title.pack()
-    
-    boton = tk.Button(root, text="Aceptar", command=root.destroy)
-    boton.pack(pady=10)
+##################################################
+# 1. Buscar
+##################################################
 
 def validarEntradaBuscar(numero):
     try:
@@ -224,8 +333,35 @@ def ventanaBuscar():
 
     search.mainloop()
 
-def close():
-    root.quit()
+##################################################
+# Ventana Principal
+##################################################
+
+def validarBotones():
+    if leeTxt(misPokemonsTxt) == False: 
+        button2.config(state="disabled")
+        button3.config(state="disabled")
+        button4.config(state="disabled")
+        button5.config(state="disabled")
+        button6.config(state="disabled")
+        button7.config(state="disabled")
+        button8.config(state="disabled")
+        button9.config(state="disabled")
+        button10.config(state="disabled")
+        button11.config(state="disabled")
+        button12.config(state="disabled")
+    else:
+        button2.config(state="active")
+        button3.config(state="active")
+        button4.config(state="active")
+        button5.config(state="active")
+        button6.config(state="active")
+        button7.config(state="active")
+        button8.config(state="active")
+        button9.config(state="active")
+        button10.config(state="active")
+        button11.config(state="active")
+        button12.config(state="active")
 
 def main():
     global root

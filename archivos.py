@@ -47,3 +47,5 @@ def lee(archivo):
     except:
         return False
     return datos
+
+misPokemonsTxt = "Mis pokémons.txt"

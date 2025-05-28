@@ -484,7 +484,7 @@ def main():
     button2.grid(row=2, column=0)
 
     global button3
-    button3 = tk.Button(frame, text="3. Pokédex", width=20) #command=#ventanaPokedex
+    button3 = tk.Button(frame, text="3. Pokédex", width=20) #command=ventanaPokedex
     button3.grid(row=3, column=0)
     
     global button4

@@ -47,7 +47,7 @@ def obtenerCsv(matrizPokemons):
     try:
         excelPokemons = "Mis pokémons.csv"
         f=open(excelPokemons,"w")
-        escritor = csv.writer(f, delimiter=";")
+        escritor = csv.writer(f, delimiter=",") #; si el asistente lo quiere ver en diferentes casillas
         escritor.writerows(matrizPokemons)
         f.close()
     except Exception as e:

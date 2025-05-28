@@ -242,6 +242,16 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
             print("Error", respuesta.status_code)
     # Guardar el archivo
     graba(misPokemonsAtrapadosPkl, diccionarioPokemons) # Lo guardamos en memoria secundaria con el fin de hacerlo más eficiente.
+    pokemonsAtrapados = lee(misPokemonsAtrapadosPkl) # Borrar luego -----------------
+    print(pokemonsAtrapados) # Borrar luego -----------------
+
+def obtenerIdAtrapados(listaRandomAtrapados):
+    listaIdAtrapados = []
+    for pokemon in listaRandomAtrapados:
+        infoPokemon = pokemon.split("^")
+        listaIdAtrapados.append(infoPokemon[0])
+    print(listaIdAtrapados) # Borrar luego -----------------
+    graba(misIdAtrapados, listaIdAtrapados)
 
 def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
     misPokemons = ""
@@ -256,12 +266,14 @@ def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
 def atraparPokemons(porcentaje):
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
-    print(listaPokemons) # Luego borrarlo, esto es para comprobar ----------------
+    print(listaPokemons) # Luego borrarlo ----------------
     # Obtener la cantidad de Pokemons atrapados, según el porcentaje
     cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
     # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados
     listaRandomAtrapados = random.sample(listaPokemons, cantidadPokemonsAtrapados)
+    print(listaRandomAtrapados) # Borrar luego -----------------
     actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
+    obtenerIdAtrapados(listaRandomAtrapados)
     obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     
 def validarPorcentaje(porcentaje):

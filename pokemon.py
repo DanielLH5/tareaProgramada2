@@ -40,6 +40,62 @@ def close():
     root.quit()
 
 ##################################################
+# 8. esShiny
+##################################################
+
+def obtenerLimiteShiny(infoAtrapados):
+    limite = 100
+    if len(infoAtrapados) < 100:
+        limite = len(infoAtrapados)
+    return limite
+
+def obtenerIdShiny(infoAtrapados):
+    listaIdShiny = []
+    contador = 0
+    limite = obtenerLimiteShiny(infoAtrapados)
+    for clave, valor in infoAtrapados.items():
+        linkShiny = valor[4]
+        if contador == limite:
+            return listaIdShiny
+        if linkShiny != "":
+            listaIdShiny.append(clave)
+        contador += 1
+    return listaIdShiny
+
+def crarArchivoShiny():
+    infoAtrapados = lee(misPokemonsAtrapadosPkl)
+    listaId = obtenerIdShiny(infoAtrapados)
+    with open("esShiny.html", "w", encoding="utf-8") as archivo:
+        archivo.write("""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <title>esShiny</title>
+        <meta charset="uft-8">
+    </head>
+    <body>
+        <header>
+    """)
+        for id in listaId:
+            archivo.write(f"""
+        <pokemon>
+            <id>{id}</id>
+            <peso>{infoAtrapados.get(id)[1][1]}</peso>
+            <altura>{infoAtrapados.get(id)[1][2]}</altura>
+            <totalStats>{infoAtrapados.get(id)[2][0]}</totalStats>
+            <stats>{infoAtrapados.get(id)[2][1]}</stats>
+            <tipos>{infoAtrapados.get(id)[3]}</tipos>
+            <imagen>{infoAtrapados.get(id)[4]}</imagen>
+        </pokemon>""")
+        archivo.write("""
+        </header>
+    </body>
+    </html>
+    """)
+    mensaje = "Se ha creado el HTML de shinys exitosamente"
+    ventanaConfirmación(mensaje)
+
+##################################################
 # 5. Descarga
 ##################################################
 
@@ -448,7 +504,7 @@ def main():
     button7.grid(row=1, column=1)
 
     global button8
-    button8 = tk.Button(frame, text="8. esShiny", width=20)
+    button8 = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
     button8.grid(row=2, column=1)
 
     global button9

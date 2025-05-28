@@ -150,7 +150,7 @@ velocidad = "speed"
     
 def validarShiny(info):
     shiny = info['sprites']['front_shiny']
-    print(shiny)
+    print(shiny) #Borrar luego, esto es para verificar link shiny ----------------
     if shiny is None:
         return False
     else:
@@ -240,8 +240,8 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
                                             ]
         else:
             print("Error", respuesta.status_code)
-    # Guardar el archivo **
-    grabaTxt(misPokemonsAtrapadosTxt, str(diccionarioPokemons))
+    # Guardar el archivo
+    graba(misPokemonsAtrapadosPkl, diccionarioPokemons) # Lo guardamos en memoria secundaria con el fin de hacerlo más eficiente.
 
 def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
     misPokemons = ""
@@ -256,7 +256,7 @@ def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
 def atraparPokemons(porcentaje):
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
-    print(listaPokemons)
+    print(listaPokemons) # Luego borrarlo, esto es para comprobar ----------------
     # Obtener la cantidad de Pokemons atrapados, según el porcentaje
     cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
     # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados

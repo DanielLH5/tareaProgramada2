@@ -49,4 +49,4 @@ def lee(archivo):
     return datos
 
 misPokemonsTxt = "Mis pokémons.txt"
-misPokemonsAtrapadosTxt = "Mis pokémons atrapados.txt"
+misPokemonsAtrapadosPkl = "Mis pokémons atrapados"

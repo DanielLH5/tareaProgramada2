@@ -4,13 +4,34 @@ python -m pip install requests
 import tkinter as tk
 import requests
 import random 
+import csv
 from archivos import * 
 
-"""
-def openSearch():
-    button1.config(state="active")
-    print("Hola Daniel!")
-"""
+##################################################
+# Ventanas Secundarias
+##################################################
+def ventanaRetroalimentacion(mensaje):
+    root = tk.Toplevel()
+    root.geometry("250x100")
+    root.title("Retroalimentación")
+
+    title = tk.Label(root, text=mensaje, padx=10, pady=10)
+    title.pack()
+    
+    boton = tk.Button(root, text="Aceptar", command=root.destroy)
+    boton.pack(pady=10)
+
+def ventanaConfirmación(mensaje):
+    root = tk.Toplevel()
+    root.geometry("250x100")
+    root.title("Confirmación")
+
+    title = tk.Label(root, text=mensaje, padx=10, pady=10)
+    title.pack()
+    
+    boton = tk.Button(root, text="Aceptar", command=root.destroy)
+    boton.pack(pady=10)
+
 ##################################################
 # 14. Salir
 ##################################################
@@ -22,7 +43,32 @@ def close():
 # 5. Descarga
 ##################################################
 
+def obtenerCsv(matrizPokemons):
+    try:
+        excelPokemons = "Mis pokémons.csv"
+        f=open(excelPokemons,"w")
+        escritor = csv.writer(f, delimiter=",") #; si el asistente lo quiere ver en diferentes casillas
+        escritor.writerows(matrizPokemons)
+        f.close()
+    except Exception as e:
+        print(f"Error al crear el archivo: {e}")
 
+def crearMatrizPokemons():
+    pokemons = leeTxt(misPokemonsTxt)
+    listaPokemons = pokemons.split(f"\n")
+    listaPokemons.pop() #Eliminamos el último "\n"
+    matrizPokemons = [["ID","Nombre","Estado"]]
+    for infoPokemon in listaPokemons:
+        listaInfo = infoPokemon.split("^")
+        if listaInfo[2] == "a":
+            listaInfo[2] = "atrapado"
+        else:
+            listaInfo[2] = "huyó"
+        matrizPokemons.append(listaInfo)
+    obtenerCsv(matrizPokemons)
+    #print(matrizPokemons)
+    mensaje = "Se ha creado el archivo .csv"
+    ventanaConfirmación(mensaje)
 
 ##################################################
 # 4. Detalle
@@ -90,34 +136,21 @@ def ventanaPokedex():
     botonAnterior = tk.Button(root, text="<-", command=lambda:anteriror(root, framePokemons))
     botonAnterior.pack(pady=10)
 """
-##################################################
-# Ventanas Secundarias
-##################################################
-def ventanaRetroalimentacion(mensaje):
-    root = tk.Toplevel()
-    root.geometry("250x100")
-    root.title("Retroalimentación")
-
-    title = tk.Label(root, text=mensaje, padx=10, pady=10)
-    title.pack()
-    
-    boton = tk.Button(root, text="Aceptar", command=root.destroy)
-    boton.pack(pady=10)
 
 ##################################################
 # 2. Atrapar
 ##################################################
 
-PUNTOS_SALUD = "hp"
-ATAQUE = "attack"
-ATAQUE_ESPECIAL = "special-attack"
-DEFENSA = "defense"
-DEFENSA_ESPECIAL = "special-defense"
-VELOCIDAD = "speed"
+puntosSalud = "hp"
+ataque = "attack"
+ataqueEspecial = "special-attack"
+defensa = "defense"
+defensaEspecial = "special-defense"
+velocidad = "speed"
     
 def validarShiny(info):
     shiny = info['sprites']['front_shiny']
-    print(shiny)
+    print(shiny) #Borrar luego, esto es para verificar link shiny ----------------
     if shiny is None:
         return False
     else:
@@ -152,22 +185,22 @@ def obtenerEstadistica(info, tipo):
     return 0
 
 def obtenerEstadisticaPuntoSalud(info):
-    return obtenerEstadistica(info, PUNTOS_SALUD)
+    return obtenerEstadistica(info, puntosSalud)
 
 def obtenerEstadisticaAtaque(info):
-    return obtenerEstadistica(info, ATAQUE)
+    return obtenerEstadistica(info, ataque)
 
 def obtenerEstadisticaDefensa(info):
-    return obtenerEstadistica(info, DEFENSA)
+    return obtenerEstadistica(info, defensa)
 
 def obtenerEstadisticaAtaqueEspecial(info):
-    return obtenerEstadistica(info, ATAQUE_ESPECIAL)
+    return obtenerEstadistica(info, ataqueEspecial)
 
 def obtenerEstadisticaDefensaEspecial(info):
-    return obtenerEstadistica(info, DEFENSA_ESPECIAL)
+    return obtenerEstadistica(info, defensaEspecial)
 
 def obtenerEstadisticaVelocidad(info):
-    return obtenerEstadistica(info, VELOCIDAD)
+    return obtenerEstadistica(info, velocidad)
 
 def obtenerTipo(info, indice):
     try:
@@ -207,8 +240,8 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
                                             ]
         else:
             print("Error", respuesta.status_code)
-    # Guardar el archivo **
-    grabaTxt(misPokemonsAtrapadosTxt, str(diccionarioPokemons))
+    # Guardar el archivo
+    graba(misPokemonsAtrapadosPkl, diccionarioPokemons) # Lo guardamos en memoria secundaria con el fin de hacerlo más eficiente.
 
 def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
     misPokemons = ""
@@ -223,7 +256,7 @@ def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
 def atraparPokemons(porcentaje):
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
-    print(listaPokemons)
+    print(listaPokemons) # Luego borrarlo, esto es para comprobar ----------------
     # Obtener la cantidad de Pokemons atrapados, según el porcentaje
     cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
     # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados
@@ -391,7 +424,7 @@ def main():
     button4.grid(row=4, column=0)
     
     global button5
-    button5 = tk.Button(frame, text="5. Descarga", width=20)
+    button5 = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
     button5.grid(row=5, column=0)
     
     global button6

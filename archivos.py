@@ -51,3 +51,5 @@ def lee(archivo):
 misPokemonsTxt = "Mis pokémons.txt"
 misIdAtrapados = "Mis id pokemons atrapados"
 misPokemonsAtrapadosPkl = "Mis pokémons atrapados"
+matrizPokemonAD = "Matriz de pokémons"
+diccPokemonAM = "Diccionario de pokémons"

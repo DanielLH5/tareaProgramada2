@@ -40,6 +40,54 @@ def close():
     root.quit()
 
 ##################################################
+# 10. Desconvertidor
+##################################################
+
+def matrizADicc():
+    matrizPokemon = lee(matrizPokemonAD)
+    diccPokemon = {}
+    for pokemon in matrizPokemon:
+        clave = pokemon[0]
+        infoPokemon = []
+        infoPokemon.append(pokemon[1])
+        infoPokemon.append(tuple(pokemon[2]))
+        estadisticas = pokemon[3]
+        apartadoEstadistica = []
+        apartadoEstadistica.append(estadisticas[0])
+        apartadoEstadistica.append(tuple(estadisticas[1]))
+        infoPokemon.append(apartadoEstadistica)
+        infoPokemon.append(tuple(pokemon[4]))
+        infoPokemon.append(pokemon[5])
+        diccPokemon[clave] = infoPokemon
+    graba(diccPokemonAM, diccPokemon) #En pickle
+    print(diccPokemon)
+    #Volver a activar todos los botones que requerían de dicc
+
+##################################################
+# 9. Convertidor
+##################################################
+
+def diccAMatriz():
+    diccPokemon = lee(misPokemonsAtrapadosPkl)
+    matrizPokemons = []
+    for clave, valor in diccPokemon.items():
+        matrizPokemon = []
+        matrizPokemon.append(clave)
+        matrizPokemon.append(valor[0])
+        matrizPokemon.append(list(valor[1]))
+        estadisticas = valor[2]
+        apartadoEstadistica = []
+        apartadoEstadistica.append(estadisticas[0])
+        apartadoEstadistica.append(list(estadisticas[1]))
+        matrizPokemon.append(apartadoEstadistica)
+        matrizPokemon.append(list(valor[3]))
+        matrizPokemon.append(valor[4])
+        matrizPokemons.append(matrizPokemon)
+    graba(matrizPokemonAD, matrizPokemons) #En pickle
+    print(matrizPokemons)
+    #Deshabilitar los botones que requieran del diccionario
+
+##################################################
 # 8. esShiny
 ##################################################
 
@@ -508,11 +556,11 @@ def main():
     button8.grid(row=2, column=1)
 
     global button9
-    button9 = tk.Button(frame, text="9. Convertidor", width=20)
+    button9 = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
     button9.grid(row=3, column=1)
 
     global button10
-    button10 = tk.Button(frame, text="10. Desconveritdor", width=20)
+    button10 = tk.Button(frame, text="10. Desconveritdor", width=20, command=matrizADicc)
     button10.grid(row=4, column=1)
     
     global button11

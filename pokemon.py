@@ -12,7 +12,7 @@ from archivos import *
 ##################################################
 def ventanaRetroalimentacion(mensaje):
     root = tk.Toplevel()
-    root.geometry("250x100")
+    root.geometry("300x100")
     root.title("Retroalimentación")
     title = tk.Label(root, text=mensaje, padx=10, pady=10)
     title.pack()
@@ -45,6 +45,104 @@ def ventanaAprobacion(comandoAceptar):
 
 def close():
     diccGlobal["root"].quit()
+
+##################################################
+# 13. Créditos
+##################################################
+
+def ventanaCreditos():
+    from tkinter import font
+    creditos = tk.Toplevel()
+    creditos.title("Créditos")
+    creditos.geometry("250x100")
+    fuenteSuave = font.Font(family="Segoe UI", size=10)
+    texto = tk.Label(creditos,font=fuenteSuave, text = "Hecho por:\n\nDaniel Liao Huang\nEthan Hernández Cubillo")
+    texto.pack(side= tk.TOP)
+
+##################################################
+# 12. Agregar Pokémon
+##################################################
+
+
+
+##################################################
+# 11. Virus
+##################################################
+
+def manipularEstadisticas(cambio, porcentaje, estadisticas):
+    listaEstadisticas = []
+    porcentaje = int(porcentaje)
+    cambio = int(cambio)
+    if cambio == 1:
+        porcentaje = -(porcentaje)
+    totalEstad = 0
+    totalEstad = estadisticas[0] + estadisticas[0] * (porcentaje/100)
+    totalEstad = round(totalEstad, 2)
+    listaEstadisticas.append(totalEstad)
+    statsIndividuales = []
+    for estad in estadisticas[1]:
+        stat = estad + estad * (porcentaje/100)
+        stat = round(stat, 2)
+        statsIndividuales.append(stat)
+    statsIndividuales = tuple(statsIndividuales)
+    listaEstadisticas.append(statsIndividuales)
+    return listaEstadisticas
+
+def actualizarStatsVirus(cambio, porcentaje):
+    pokemonBD = lee(misPokemonsAtrapadosPkl)
+    #print(cambio, porcentaje)
+    diccPokemonVirus = {}
+    for clave, info in pokemonBD.items():
+        infoPokemon = []
+        infoPokemon.append(info[0])
+        infoPokemon.append(info[1])
+        estadisticas = info[2]
+        apartadoEstadistica = manipularEstadisticas(cambio, porcentaje, estadisticas)
+        infoPokemon.append(apartadoEstadistica)
+        infoPokemon.append(info[3])
+        infoPokemon.append(info[4])
+        diccPokemonVirus[clave] = infoPokemon
+    def guardarDicc():
+        graba(misPokemonsAtrapadosPkl, diccPokemonVirus)  # Guardar el diccionario
+        mensaje = "Los cambios han sido guardados"
+        ventanaConfirmación(mensaje)
+        print(diccPokemonVirus)
+    ventanaAprobacion(guardarDicc)
+
+def validarPorcentajeVirus(cambio, porcentaje):
+    try:
+        if int(porcentaje) < 0: #Si permite +100%
+            return (False, "El porcentaje debe de ser mayor a 0.")
+        elif int(cambio) == 1 and int(porcentaje) > 100:
+            return (False, "Al disminuir, el porcentaje no puede ser mayor a 100.")
+        else:
+            return (True, "")
+    except ValueError:
+        return (False, "El valor tiene que ser un número entero.")
+
+def verificarPorcentajeVirus(cambio, porcentaje):
+    porcentajeValido = validarPorcentajeVirus(cambio, porcentaje)
+    if porcentajeValido[0] == True:
+        return actualizarStatsVirus(cambio, porcentaje)
+    else:
+        mensaje = porcentajeValido[1] # Obtener el mensaje de error
+        return ventanaRetroalimentacion(mensaje)
+
+def ventanaVirus():
+    virus = tk.Toplevel()
+    virus.title("Virus")
+    virus.geometry("250x180")
+    opcion = tk.StringVar(value="disminuir")
+    tk.Radiobutton(virus, text="Aumentar", variable=opcion, value=0).pack(anchor="w", padx=10, pady=5)
+    tk.Radiobutton(virus, text="Disminuir", variable=opcion, value=1).pack(anchor="w", padx=10)
+    contenedor = tk.Frame(virus)
+    contenedor.pack(pady=10, padx=10, fill="x")
+    etiquetaPorcentaje = tk.Label(contenedor, text="Porcentaje:")
+    etiquetaPorcentaje.pack(side="left")
+    entrada = tk.Entry(contenedor)
+    entrada.pack(side="left", fill="x", expand=True)
+    botonAccion = tk.Button(virus, text="Accionar virus", width=30, command=lambda: verificarPorcentajeVirus(opcion.get(), entrada.get()))
+    botonAccion.pack(pady=10, padx=10, fill="x")
 
 ##################################################
 # 10. Desconvertidor
@@ -549,28 +647,28 @@ def main():
     diccGlobal["botones"]["boton6"].grid(row=6, column=0)
     #global button7
     diccGlobal["botones"]["boton7"] = tk.Button(frame, text="7. HTML Desc", width=20)
-    diccGlobal["botones"]["boton7"].grid(row=1, column=1)
+    diccGlobal["botones"]["boton7"].grid(row=7, column=0)
     #global button8
     diccGlobal["botones"]["boton8"] = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
-    diccGlobal["botones"]["boton8"].grid(row=2, column=1)
+    diccGlobal["botones"]["boton8"].grid(row=1, column=1)
     #global button9
     diccGlobal["botones"]["boton9"] = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
-    diccGlobal["botones"]["boton9"].grid(row=3, column=1)
+    diccGlobal["botones"]["boton9"].grid(row=2, column=1)
     #global button10
     diccGlobal["botones"]["boton10"] = tk.Button(frame, text="10. Desconveritdor", width=20, command=matrizADicc)
-    diccGlobal["botones"]["boton10"].grid(row=4, column=1)
+    diccGlobal["botones"]["boton10"].grid(row=3, column=1)
     #global button11
-    diccGlobal["botones"]["boton11"] = tk.Button(frame, text="11. Virus", width=20)
-    diccGlobal["botones"]["boton11"].grid(row=5, column=1)
+    diccGlobal["botones"]["boton11"] = tk.Button(frame, text="11. Virus", width=20, command=ventanaVirus)
+    diccGlobal["botones"]["boton11"].grid(row=4, column=1)
     #global button12
     diccGlobal["botones"]["boton12"] = tk.Button(frame, text="12. Agregar", width=20)
     diccGlobal["botones"]["boton12"].grid(row=5, column=1)
     #global button13
-    diccGlobal["botones"]["boton13"] = tk.Button(frame, text="13. Créditos", width=20)
-    diccGlobal["botones"]["boton13"].grid(row=5, column=1)
+    diccGlobal["botones"]["boton13"] = tk.Button(frame, text="13. Créditos", width=20, command=ventanaCreditos)
+    diccGlobal["botones"]["boton13"].grid(row=6, column=1)
     #global button14
     diccGlobal["botones"]["boton14"] = tk.Button(frame, text="14. Salir", width=20, command=close)
-    diccGlobal["botones"]["boton14"].grid(row=6, column=1) 
+    diccGlobal["botones"]["boton14"].grid(row=7, column=1) 
     validarBotones()
     root.mainloop()
 

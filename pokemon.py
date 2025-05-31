@@ -14,10 +14,8 @@ def ventanaRetroalimentacion(mensaje):
     root = tk.Toplevel()
     root.geometry("250x100")
     root.title("Retroalimentación")
-
     title = tk.Label(root, text=mensaje, padx=10, pady=10)
     title.pack()
-    
     boton = tk.Button(root, text="Aceptar", command=root.destroy)
     boton.pack(pady=10)
 
@@ -25,10 +23,8 @@ def ventanaConfirmación(mensaje):
     root = tk.Toplevel()
     root.geometry("250x100")
     root.title("Confirmación")
-
     title = tk.Label(root, text=mensaje, padx=10, pady=10)
     title.pack()
-    
     boton = tk.Button(root, text="Aceptar", command=root.destroy)
     boton.pack(pady=10)
     
@@ -36,10 +32,8 @@ def ventanaAprobacion(comandoAceptar):
     root = tk.Toplevel()
     root.geometry("250x150")
     root.title("Aprobación")
-
     title = tk.Label(root, text="¿Deseas realizar esta acción?", padx=10, pady=10)
     title.pack()
-
     botonAceptar = tk.Button(root, text="Aceptar", command=lambda: [comandoAceptar(), root.destroy()])
     botonAceptar.pack(pady=5)
     botonRechazar = tk.Button(root, text="Rechazar", command=root.destroy)
@@ -50,7 +44,7 @@ def ventanaAprobacion(comandoAceptar):
 ##################################################
 
 def close():
-    root.quit()
+    diccGlobal["root"].quit()
 
 ##################################################
 # 10. Desconvertidor
@@ -427,31 +421,25 @@ def calcularPorcentaje(porcentaje):
         return ventanaRetroalimentacion(mensaje)
 
 def limpiarEntradaPorcentaje():
-    porcentaje.set("")
+    diccGlobal["porcentaje"].set("")
 
 def ventanaAtrapar():
     ventana = tk.Toplevel()
     ventana.title("Atrapar Pokémons")
     ventana.geometry("500x200")
-
-    global porcentaje #Hace que todas las demás funciones también la pueda usar
-    porcentaje = tk.StringVar()
-    
+    diccGlobal["porcentaje"] = tk.StringVar()
     contenedorPorcentaje = tk.Frame(ventana, pady=15, padx=5)
     contenedorPorcentaje.pack()
     etiquetaPorcentaje = tk.Label(contenedorPorcentaje, text = "Porcentaje: ")
     etiquetaPorcentaje.grid(row=0,column=0)
-    entradaPorcentaje = tk.Entry(contenedorPorcentaje, width=30, textvariable=porcentaje)
+    entradaPorcentaje = tk.Entry(contenedorPorcentaje, width=30, textvariable=diccGlobal["porcentaje"])
     entradaPorcentaje.grid(row=0,column=1)
-
     contenedorBotones = tk.Frame(ventana, pady=15, padx=5)
     contenedorBotones.pack()
-
-    botonAtrapar = tk.Button(contenedorBotones, text="Atrapar", width=30, command=lambda: calcularPorcentaje(porcentaje.get()))
+    botonAtrapar = tk.Button(contenedorBotones, text="Atrapar", width=30, command=lambda: calcularPorcentaje(diccGlobal["porcentaje"].get()))
     botonAtrapar.grid(row=0, column=0, pady=5)
     botonLimpiar = tk.Button(contenedorBotones, text="Limpiar", width=30, command=limpiarEntradaPorcentaje)
     botonLimpiar.grid(row=0, column=1, pady=5)
-
     ventana.mainloop()
 
 ##################################################
@@ -467,7 +455,7 @@ def obtenerLimitePokemon():
 
 def buscarPokemon(cantidad):
     urlPokemon = "https://pokeapi.co/api/v2/pokemon"
-    number.set("")
+    diccGlobal["numero"].set("")
     url = "https://pokeapi.co/api/v2/pokemon"
     params = {
         "limit": cantidad,
@@ -511,15 +499,11 @@ def ventanaBuscar():
     search = tk.Toplevel()
     search.title("Búsqueda de Pokémons")
     search.geometry("500x200")
-
-    global number #Hace que todas las demás funciones también la pueda usar ----------------
-    number = tk.StringVar()
-    cantidad = tk.Entry(search, width=30, textvariable=number)
+    diccGlobal["numero"] = tk.StringVar()
+    cantidad = tk.Entry(search, width=30, textvariable=diccGlobal["numero"])
     cantidad.pack()
-
-    searchButton = tk.Button(search, text="Buscar", width=30, command=lambda: validarEntradaBuscar(number.get()))
+    searchButton = tk.Button(search, text="Buscar", width=30, command=lambda: validarEntradaBuscar(diccGlobal["numero"].get()))
     searchButton.pack()
-
     search.mainloop()
 
 ##################################################
@@ -527,87 +511,71 @@ def ventanaBuscar():
 ##################################################
 
 def validarBotones():
-    if leeTxt(misPokemonsTxt) == False: 
-        button2.config(state="disabled")
-        button3.config(state="disabled")
-        button4.config(state="disabled")
-        button5.config(state="disabled")
-        button6.config(state="disabled")
-        button7.config(state="disabled")
-        button8.config(state="disabled")
-        button9.config(state="disabled")
-        button10.config(state="disabled")
-        button11.config(state="disabled")
-        button12.config(state="disabled")
+    if not leeTxt(misPokemonsTxt):
+        for i in range(2, 13):  #Botones del 2 al 12
+            diccGlobal["botones"][f"boton{i}"].config(state="disabled")
     else:
-        button2.config(state="active")
-        button3.config(state="active")
-        button4.config(state="active")
-        button5.config(state="active")
-        button6.config(state="active")
-        button7.config(state="active")
-        button8.config(state="active")
-        button9.config(state="active")
-        button10.config(state="active")
-        button11.config(state="active")
-        button12.config(state="active")
+        for i in range(2, 13):
+            diccGlobal["botones"][f"boton{i}"].config(state="active")
 
 def main():
-    global root
+    #global root
     root = tk.Tk()
     root.geometry("500x300")
     root.title("Ventana Principal")
-
+    diccGlobal["root"] = root
     title = tk.Label(root, text="Poképad")
     title.pack()
-
     frame = tk.Frame(root, padx=10, pady=10)
     frame.pack()
 
-    global button1
-    button1 = tk.Button(frame, width=20, text="1. Búsqueda", command=ventanaBuscar)
-    button1.grid(row=1, column=0)    
-    global button2
-    button2 = tk.Button(frame, text="2. Atrapar", width=20, command=ventanaAtrapar)
-    button2.grid(row=2, column=0)
-    global button3
-    button3 = tk.Button(frame, text="3. Pokédex", width=20)
-    button3.grid(row=3, column=0) 
-    global button4
-    button4 = tk.Button(frame, text="4. Detalle", width=20)
-    button4.grid(row=4, column=0)
-    global button5
-    button5 = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
-    button5.grid(row=5, column=0)
-    global button6
-    button6 = tk.Button(frame, text="6. XML", width=20)
-    button6.grid(row=6, column=0)
-    global button7
-    button7 = tk.Button(frame, text="7. HTML Desc", width=20)
-    button7.grid(row=1, column=1)
-    global button8
-    button8 = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
-    button8.grid(row=2, column=1)
-    global button9
-    button9 = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
-    button9.grid(row=3, column=1)
-    global button10
-    button10 = tk.Button(frame, text="10. Desconveritdor", width=20, command=matrizADicc)
-    button10.grid(row=4, column=1)
-    global button11
-    button11 = tk.Button(frame, text="11. Virus", width=20)
-    button11.grid(row=5, column=1)
-    global button12
-    button12 = tk.Button(frame, text="12. Agregar", width=20)
-    button12.grid(row=5, column=1)
-    global button13
-    button13 = tk.Button(frame, text="13. Créditos", width=20)
-    button13.grid(row=5, column=1)
-    global button14
-    button14 = tk.Button(frame, text="14. Salir", width=20, command=close)
-    button14.grid(row=6, column=1)
-    
+    #global button1
+    diccGlobal["botones"]["boton1"] = tk.Button(frame, width=20, text="1. Búsqueda", command=ventanaBuscar)
+    diccGlobal["botones"]["boton1"].grid(row=1, column=0)    
+    #global button2
+    diccGlobal["botones"]["boton2"] = tk.Button(frame, text="2. Atrapar", width=20, command=ventanaAtrapar)
+    diccGlobal["botones"]["boton2"].grid(row=2, column=0)
+    #global button3
+    diccGlobal["botones"]["boton3"] = tk.Button(frame, text="3. Pokédex", width=20)
+    diccGlobal["botones"]["boton3"].grid(row=3, column=0) 
+    #global button4
+    diccGlobal["botones"]["boton4"] = tk.Button(frame, text="4. Detalle", width=20)
+    diccGlobal["botones"]["boton4"].grid(row=4, column=0)
+    #global button5
+    diccGlobal["botones"]["boton5"] = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
+    diccGlobal["botones"]["boton5"].grid(row=5, column=0)
+    #global button6
+    diccGlobal["botones"]["boton6"] = tk.Button(frame, text="6. XML", width=20)
+    diccGlobal["botones"]["boton6"].grid(row=6, column=0)
+    #global button7
+    diccGlobal["botones"]["boton7"] = tk.Button(frame, text="7. HTML Desc", width=20)
+    diccGlobal["botones"]["boton7"].grid(row=1, column=1)
+    #global button8
+    diccGlobal["botones"]["boton8"] = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
+    diccGlobal["botones"]["boton8"].grid(row=2, column=1)
+    #global button9
+    diccGlobal["botones"]["boton9"] = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
+    diccGlobal["botones"]["boton9"].grid(row=3, column=1)
+    #global button10
+    diccGlobal["botones"]["boton10"] = tk.Button(frame, text="10. Desconveritdor", width=20, command=matrizADicc)
+    diccGlobal["botones"]["boton10"].grid(row=4, column=1)
+    #global button11
+    diccGlobal["botones"]["boton11"] = tk.Button(frame, text="11. Virus", width=20)
+    diccGlobal["botones"]["boton11"].grid(row=5, column=1)
+    #global button12
+    diccGlobal["botones"]["boton12"] = tk.Button(frame, text="12. Agregar", width=20)
+    diccGlobal["botones"]["boton12"].grid(row=5, column=1)
+    #global button13
+    diccGlobal["botones"]["boton13"] = tk.Button(frame, text="13. Créditos", width=20)
+    diccGlobal["botones"]["boton13"].grid(row=5, column=1)
+    #global button14
+    diccGlobal["botones"]["boton14"] = tk.Button(frame, text="14. Salir", width=20, command=close)
+    diccGlobal["botones"]["boton14"].grid(row=6, column=1) 
     validarBotones()
     root.mainloop()
 
+diccGlobal = {
+    "root": None,
+    "botones": {}
+}
 main()

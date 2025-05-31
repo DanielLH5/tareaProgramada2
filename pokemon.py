@@ -31,6 +31,19 @@ def ventanaConfirmación(mensaje):
     
     boton = tk.Button(root, text="Aceptar", command=root.destroy)
     boton.pack(pady=10)
+    
+def ventanaAprobacion(comandoAceptar):
+    root = tk.Toplevel()
+    root.geometry("250x150")
+    root.title("Aprobación")
+
+    title = tk.Label(root, text="¿Deseas realizar esta acción?", padx=10, pady=10)
+    title.pack()
+
+    botonAceptar = tk.Button(root, text="Aceptar", command=lambda: [comandoAceptar(), root.destroy()])
+    botonAceptar.pack(pady=5)
+    botonRechazar = tk.Button(root, text="Rechazar", command=root.destroy)
+    botonRechazar.pack(pady=5)
 
 ##################################################
 # 14. Salir
@@ -59,8 +72,14 @@ def matrizADicc():
         infoPokemon.append(tuple(pokemon[4]))
         infoPokemon.append(pokemon[5])
         diccPokemon[clave] = infoPokemon
-    graba(diccPokemonAM, diccPokemon) #En pickle
-    print(diccPokemon)
+    
+    def guardarDicc():
+        graba(diccPokemonAM, diccPokemon)  # Guardar el diccionario
+        mensaje = "Los cambios han sido guardados"
+        ventanaConfirmación(mensaje)
+        print(diccPokemon)
+        # Aquí puedes reactivar botones u otras acciones
+    ventanaAprobacion(guardarDicc)
     #Volver a activar todos los botones que requerían de dicc
 
 ##################################################
@@ -83,8 +102,14 @@ def diccAMatriz():
         matrizPokemon.append(list(valor[3]))
         matrizPokemon.append(valor[4])
         matrizPokemons.append(matrizPokemon)
-    graba(matrizPokemonAD, matrizPokemons) #En pickle
-    print(matrizPokemons)
+        
+    def guardarMatriz():
+        graba(matrizPokemonAD, matrizPokemons)  # Guardar el diccionario
+        mensaje = "Los cambios han sido guardados"
+        ventanaConfirmación(mensaje)
+        print(matrizPokemons)
+        # Aquí puedes reactivar botones u otras acciones
+    ventanaAprobacion(guardarMatriz)
     #Deshabilitar los botones que requieran del diccionario
 
 ##################################################
@@ -112,36 +137,36 @@ def obtenerIdShiny(infoAtrapados):
 
 def crarArchivoShiny():
     infoAtrapados = lee(misPokemonsAtrapadosPkl)
+    #print(infoAtrapados) # Borrar luego ---------------
     listaId = obtenerIdShiny(infoAtrapados)
-    with open("esShiny.html", "w", encoding="utf-8") as archivo:
-        archivo.write("""
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <title>esShiny</title>
-        <meta charset="uft-8">
-    </head>
-    <body>
-        <header>
-    """)
-        for id in listaId:
-            archivo.write(f"""
-        <pokemon>
-            <id>{id}</id>
-            <peso>{infoAtrapados.get(id)[1][1]}</peso>
-            <altura>{infoAtrapados.get(id)[1][2]}</altura>
-            <totalStats>{infoAtrapados.get(id)[2][0]}</totalStats>
-            <stats>{infoAtrapados.get(id)[2][1]}</stats>
-            <tipos>{infoAtrapados.get(id)[3]}</tipos>
-            <imagen>{infoAtrapados.get(id)[4]}</imagen>
-        </pokemon>""")
-        archivo.write("""
-        </header>
-    </body>
-    </html>
-    """)
-    mensaje = "Se ha creado el HTML de shinys exitosamente"
-    ventanaConfirmación(mensaje)
+    def crearHTMLShiny():
+        with open("esShiny.html", "w", encoding="utf-8") as archivo:
+            archivo.write("""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>esShiny</title>
+    <meta charset="uft-8">
+</head>
+<body>""")
+            for id in listaId:
+                archivo.write(f"""
+    <pokemon>
+        <id>{id}</id>
+        <nombre>{infoAtrapados.get(id)[0]}</nombre>
+        <peso>{infoAtrapados.get(id)[1][1]}</peso>
+        <altura>{infoAtrapados.get(id)[1][2]}</altura>
+        <totalStats>{infoAtrapados.get(id)[2][0]}</totalStats>
+        <stats>{infoAtrapados.get(id)[2][1]}</stats>
+        <tipos>{infoAtrapados.get(id)[3]}</tipos>
+        <imagen>{infoAtrapados.get(id)[4]}</imagen>
+    </pokemon>""")
+            archivo.write("""
+</body>
+</html>
+        """)
+        mensaje = "Se ha creado el HTML de shinys exitosamente"
+        ventanaConfirmación(mensaje)
+    ventanaAprobacion(crearHTMLShiny)
 
 ##################################################
 # 5. Descarga
@@ -169,10 +194,12 @@ def crearMatrizPokemons():
         else:
             listaInfo[2] = "huyó"
         matrizPokemons.append(listaInfo)
-    obtenerCsv(matrizPokemons)
-    #print(matrizPokemons)
-    mensaje = "Se ha creado el archivo .csv"
-    ventanaConfirmación(mensaje)
+    
+    def guardarCsv():
+        obtenerCsv(matrizPokemons)
+        mensaje = "Se ha creado el archivo .csv"
+        ventanaConfirmación(mensaje)
+    ventanaAprobacion(guardarCsv)
 
 ##################################################
 # 4. Detalle
@@ -379,6 +406,8 @@ def atraparPokemons(porcentaje):
     actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     obtenerIdAtrapados(listaRandomAtrapados)
     obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
+    mensaje = "Pokemons atrapados exitosamente."
+    ventanaConfirmación(mensaje)
     
 def validarPorcentaje(porcentaje):
     try:
@@ -429,16 +458,12 @@ def ventanaAtrapar():
 # 1. Buscar
 ##################################################
 
-def validarEntradaBuscar(numero):
-    try:
-        if int(numero) >= 1:
-            return buscarPokemon(numero)
-        else:
-            mensaje = "El número tiene que ser mayor a 0."
-            return ventanaRetroalimentacion(mensaje)
-    except ValueError:
-        mensaje = "El valor tiene que ser un número entero."
-        return ventanaRetroalimentacion(mensaje)
+def obtenerLimitePokemon():
+    url = "https://pokeapi.co/api/v2/pokemon?"
+    respuesta = requests.get(url)
+    if respuesta.status_code == 200:
+        datos = respuesta.json()
+        return datos["count"]
 
 def buscarPokemon(cantidad):
     urlPokemon = "https://pokeapi.co/api/v2/pokemon"
@@ -459,6 +484,8 @@ def buscarPokemon(cantidad):
             print(f"nombre: {name}")
             print(f"url: {url}")
             strPokemones += f"{id}^{name}\n"
+        mensaje = "Se ha creado la Base de Datos de pokémons"
+        ventanaConfirmación(mensaje)
         grabaTxt(misPokemonsTxt, strPokemones) #.txt solo admite str
         validarBotones() #verifico si está el .txt para habilitar los otros botones
         #print(listaPokemones) #Para verificar la información a u guardar.
@@ -466,12 +493,26 @@ def buscarPokemon(cantidad):
         print(f"Error: {response.status_code}")
     print(f"Se ha creado los {cantidad} pokémons")
 
+def validarEntradaBuscar(numero):
+    try:
+        if int(numero) < 1:
+            mensaje = "El número tiene que ser mayor a 0."
+            return ventanaRetroalimentacion(mensaje)
+        elif int(numero) > obtenerLimitePokemon():
+            mensaje = "Excediste el límite de pokémons dentro del API."
+            return ventanaRetroalimentacion(mensaje)
+        else:
+            return buscarPokemon(numero)
+    except ValueError:
+        mensaje = "El valor tiene que ser un número entero."
+        return ventanaRetroalimentacion(mensaje)
+
 def ventanaBuscar():
     search = tk.Toplevel()
     search.title("Búsqueda de Pokémons")
     search.geometry("500x200")
 
-    global number #Hace que todas las demás funciones también la pueda usar
+    global number #Hace que todas las demás funciones también la pueda usar ----------------
     number = tk.StringVar()
     cantidad = tk.Entry(search, width=30, textvariable=number)
     cantidad.pack()
@@ -525,56 +566,43 @@ def main():
 
     global button1
     button1 = tk.Button(frame, width=20, text="1. Búsqueda", command=ventanaBuscar)
-    button1.grid(row=1, column=0)
-    
+    button1.grid(row=1, column=0)    
     global button2
     button2 = tk.Button(frame, text="2. Atrapar", width=20, command=ventanaAtrapar)
     button2.grid(row=2, column=0)
-
     global button3
-    button3 = tk.Button(frame, text="3. Pokédex", width=20) #command=ventanaPokedex
-    button3.grid(row=3, column=0)
-    
+    button3 = tk.Button(frame, text="3. Pokédex", width=20)
+    button3.grid(row=3, column=0) 
     global button4
     button4 = tk.Button(frame, text="4. Detalle", width=20)
     button4.grid(row=4, column=0)
-    
     global button5
     button5 = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
     button5.grid(row=5, column=0)
-    
     global button6
     button6 = tk.Button(frame, text="6. XML", width=20)
     button6.grid(row=6, column=0)
-    
     global button7
     button7 = tk.Button(frame, text="7. HTML Desc", width=20)
     button7.grid(row=1, column=1)
-
     global button8
     button8 = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
     button8.grid(row=2, column=1)
-
     global button9
     button9 = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
     button9.grid(row=3, column=1)
-
     global button10
     button10 = tk.Button(frame, text="10. Desconveritdor", width=20, command=matrizADicc)
     button10.grid(row=4, column=1)
-    
     global button11
     button11 = tk.Button(frame, text="11. Virus", width=20)
     button11.grid(row=5, column=1)
-    
     global button12
     button12 = tk.Button(frame, text="12. Agregar", width=20)
     button12.grid(row=5, column=1)
-    
     global button13
     button13 = tk.Button(frame, text="13. Créditos", width=20)
     button13.grid(row=5, column=1)
-    
     global button14
     button14 = tk.Button(frame, text="14. Salir", width=20, command=close)
     button14.grid(row=6, column=1)

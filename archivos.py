@@ -9,6 +9,10 @@ def grabaTxt(archivoTxt,datos):
         print("Error al leer el archivo: ", archivoTxt)
     return
 
+def leeTxtLineas(txt):
+    with open(txt, 'r', encoding='utf-8') as f:
+        return f.readlines()
+
 def leeTxt(archivoTxt):
     datos = []
     try:
@@ -53,3 +57,4 @@ misIdAtrapados = "Mis id pokemons atrapados"
 misPokemonsAtrapadosPkl = "Mis pokémons atrapados"
 matrizPokemonAD = "Matriz de pokémons"
 diccPokemonAM = "Diccionario de pokémons"
+excelPokemons = "Mis pokémons.csv"

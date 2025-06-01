@@ -9,6 +9,10 @@ def grabaTxt(archivoTxt,datos):
         print("Error al leer el archivo: ", archivoTxt)
     return
 
+def leeTxtLineas(txt):
+    with open(txt, 'r', encoding='utf-8') as f:
+        return f.readlines()
+
 def leeTxt(archivoTxt):
     datos = []
     try:

@@ -19,7 +19,7 @@ def ventanaRetroalimentacion(mensaje):
     boton = tk.Button(root, text="Aceptar", command=root.destroy)
     boton.pack(pady=10)
 
-def ventanaConfirmación(mensaje):
+def ventanaConfirmacion(mensaje):
     root = tk.Toplevel()
     root.geometry("250x100")
     root.title("Confirmación")
@@ -63,7 +63,53 @@ def ventanaCreditos():
 # 12. Agregar Pokémon
 ##################################################
 
+def atraparPokemonID(id):
+    urlID = f"https://pokeapi.co/api/v2/pokemon/{id}/"
+    response = requests.get(urlID) #200 si está ok, 400 si tiene un error, 500 si no se encuentra
+    if response.ok: 
+        data = response.json()
+        print(f"Nombre: {data['name']}")
+        print(f"ID: {data['id']}")
+        print(f"Altura: {data['height']}")
+        print(f"Peso: {data['weight']}")
+        #Falta agregarlo al txt y a la base de datos
+        mensaje = "Se ha creado la Base de Datos de pokémons"
+        ventanaConfirmacion(mensaje)
+    else:
+        print(f"Error: {response.status_code}")
+    print(f"Se ha agregado el id: {id}.")
 
+def validarAtraparPokemon(id):
+    limite = obtenerLimitePokemon()
+    pokemonsBuscados = leeTxt(misPokemonsTxt)
+    pokemonsBuscados = pokemonsBuscados.split("\n")[:-1]
+    cantidad = len(pokemonsBuscados)
+    try:
+        if int(id) <= cantidad:
+            mensaje = "El ID ya se encontraba en la base de datos."
+            return ventanaRetroalimentacion(mensaje)
+        elif int(id) > limite:
+            mensaje = "Excediste el límite de pokémons dentro del API."
+            return ventanaRetroalimentacion(mensaje)
+        else:
+            return atraparPokemonID(id)
+    except ValueError:
+        mensaje = "El valor tiene que ser un número entero."
+        return ventanaRetroalimentacion(mensaje)
+
+def ventanaAgregarPokemon():
+    agregar = tk.Toplevel()
+    agregar.title("Agregar Pokémon")
+    agregar.geometry("500x200")
+    etiquetaBuscar = tk.Label(agregar, text = "Ingrese el ID que quieras buscar:")
+    etiquetaBuscar.pack(pady=20)
+    contenedorAtrapar = tk.Frame(agregar, pady=15, padx=5)
+    contenedorAtrapar.pack(pady=10, padx=10)
+    id = tk.Entry(contenedorAtrapar, width=20)
+    id.grid(row=0,column=0)
+    botonBuscar = tk.Button(contenedorAtrapar, text="Agregar", width=30, command=lambda: validarAtraparPokemon(id.get()))
+    botonBuscar.grid(row=0,column=1)
+    agregar.mainloop()
 
 ##################################################
 # 11. Virus
@@ -105,7 +151,7 @@ def actualizarStatsVirus(cambio, porcentaje):
     def guardarDicc():
         graba(misPokemonsAtrapadosPkl, diccPokemonVirus)  # Guardar el diccionario
         mensaje = "Los cambios han sido guardados"
-        ventanaConfirmación(mensaje)
+        ventanaConfirmacion(mensaje)
         print(diccPokemonVirus)
     ventanaAprobacion(guardarDicc)
 
@@ -168,7 +214,7 @@ def matrizADicc():
     def guardarDicc():
         graba(diccPokemonAM, diccPokemon)  # Guardar el diccionario
         mensaje = "Los cambios han sido guardados"
-        ventanaConfirmación(mensaje)
+        ventanaConfirmacion(mensaje)
         print(diccPokemon)
         # Aquí puedes reactivar botones u otras acciones
     ventanaAprobacion(guardarDicc)
@@ -198,7 +244,7 @@ def diccAMatriz():
     def guardarMatriz():
         graba(matrizPokemonAD, matrizPokemons)  # Guardar el diccionario
         mensaje = "Los cambios han sido guardados"
-        ventanaConfirmación(mensaje)
+        ventanaConfirmacion(mensaje)
         print(matrizPokemons)
         # Aquí puedes reactivar botones u otras acciones
     ventanaAprobacion(guardarMatriz)
@@ -257,7 +303,7 @@ def crarArchivoShiny():
 </html>
         """)
         mensaje = "Se ha creado el HTML de shinys exitosamente"
-        ventanaConfirmación(mensaje)
+        ventanaConfirmacion(mensaje)
     ventanaAprobacion(crearHTMLShiny)
 
 ##################################################
@@ -266,7 +312,6 @@ def crarArchivoShiny():
 
 def obtenerCsv(matrizPokemons):
     try:
-        excelPokemons = "Mis pokémons.csv"
         f=open(excelPokemons,"w")
         escritor = csv.writer(f, delimiter=",") #; si el asistente lo quiere ver en diferentes casillas
         escritor.writerows(matrizPokemons)
@@ -290,7 +335,7 @@ def crearMatrizPokemons():
     def guardarCsv():
         obtenerCsv(matrizPokemons)
         mensaje = "Se ha creado el archivo .csv"
-        ventanaConfirmación(mensaje)
+        ventanaConfirmacion(mensaje)
     ventanaAprobacion(guardarCsv)
 
 ##################################################
@@ -499,7 +544,7 @@ def atraparPokemons(porcentaje):
     obtenerIdAtrapados(listaRandomAtrapados)
     obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     mensaje = "Pokemons atrapados exitosamente."
-    ventanaConfirmación(mensaje)
+    ventanaConfirmacion(mensaje)
     
 def validarPorcentaje(porcentaje):
     try:
@@ -570,9 +615,9 @@ def buscarPokemon(cantidad):
             print(f"nombre: {name}")
             print(f"url: {url}")
             strPokemones += f"{id}^{name}\n"
-        mensaje = "Se ha creado la Base de Datos de pokémons"
-        ventanaConfirmación(mensaje)
         grabaTxt(misPokemonsTxt, strPokemones) #.txt solo admite str
+        mensaje = "Se ha creado la Base de Datos de pokémons"
+        ventanaConfirmacion(mensaje)
         validarBotones() #verifico si está el .txt para habilitar los otros botones
         #print(listaPokemones) #Para verificar la información a u guardar.
     else:
@@ -661,7 +706,7 @@ def main():
     diccGlobal["botones"]["boton11"] = tk.Button(frame, text="11. Virus", width=20, command=ventanaVirus)
     diccGlobal["botones"]["boton11"].grid(row=4, column=1)
     #global button12
-    diccGlobal["botones"]["boton12"] = tk.Button(frame, text="12. Agregar", width=20)
+    diccGlobal["botones"]["boton12"] = tk.Button(frame, text="12. Agregar", width=20, command=ventanaAgregarPokemon)
     diccGlobal["botones"]["boton12"].grid(row=5, column=1)
     #global button13
     diccGlobal["botones"]["boton13"] = tk.Button(frame, text="13. Créditos", width=20, command=ventanaCreditos)

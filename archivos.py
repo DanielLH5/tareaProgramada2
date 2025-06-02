@@ -6,12 +6,21 @@ def grabaTxt(archivoTxt,datos):
         f.write(datos)
         f.close()
     except:
-        print("Error al leer el archivo: ", archivoTxt)
+        print(f"Error al leer el archivo: {archivoTxt}")
     return
 
-def leeTxtLineas(txt):
-    with open(txt, 'r', encoding='utf-8') as f:
-        return f.readlines()
+# def leeTxtLineas(txt):
+#     with open(txt, 'r', encoding='utf-8') as f:
+#         return f.readlines()
+
+def agregarTxt(archivoTxt,datos):
+    try:
+        f=open(archivoTxt,"a")
+        f.write(datos)
+        f.close()
+    except:
+        print(f"Error al leer el archivo: {archivoTxt}")
+    return
 
 def leeTxt(archivoTxt):
     datos = []
@@ -34,7 +43,7 @@ def graba(archivo,datos):
         pickle.dump(datos,f)
         f.close()
     except:
-        print("Error al leer el archivo: ", archivo)
+        print(f"Error al leer el archivo: {archivo}")
     return
 
 def lee(archivo):

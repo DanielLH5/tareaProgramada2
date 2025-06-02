@@ -5,6 +5,7 @@ import tkinter as tk
 import requests
 import random 
 import csv
+import re
 from archivos import * 
 
 ##################################################
@@ -21,7 +22,7 @@ def ventanaRetroalimentacion(mensaje):
 
 def ventanaConfirmacion(mensaje):
     root = tk.Toplevel()
-    root.geometry("250x100")
+    root.geometry("300x100")
     root.title("Confirmación")
     title = tk.Label(root, text=mensaje, padx=10, pady=10)
     title.pack()
@@ -63,39 +64,79 @@ def ventanaCreditos():
 # 12. Agregar Pokémon
 ##################################################
 
-def atraparPokemonID(id):
+def agregarPokemonIDTxt(id, nombre):
+    txtPokemons = leeTxt(misPokemonsTxt)
+    listaID = obtenerIDBuscados(txtPokemons)
+    nuevoPokemon = f"{id}^{nombre}^a"
+    #print(nuevoPokemon) # Borrar luego -----------------
+    txtPokemonsActualizado = ""
+    if id not in listaID:
+        agregarTxt(misPokemonsTxt, nuevoPokemon)
+        #txtActualizado = leeTxt(misPokemonsTxt) # Borrar luego -----------------
+        #print(txtActualizado) # Borrar luego -----------------
+    else:
+        listaPokemons = txtPokemons.split("\n")[:-1]
+        for pokemon in listaPokemons:
+            if re.fullmatch(f"^{id}\\^[a-z\\-]+\\^[a-z]$", pokemon):
+                txtPokemonsActualizado += nuevoPokemon + "\n"
+            else:
+                txtPokemonsActualizado += pokemon + "\n"
+        print(txtPokemonsActualizado)
+            
+def atraparPokemonID(id, pokemonsA):
     urlID = f"https://pokeapi.co/api/v2/pokemon/{id}/"
-    response = requests.get(urlID) #200 si está ok, 400 si tiene un error, 500 si no se encuentra
-    if response.ok: 
-        data = response.json()
-        print(f"Nombre: {data['name']}")
-        print(f"ID: {data['id']}")
-        print(f"Altura: {data['height']}")
-        print(f"Peso: {data['weight']}")
-        #Falta agregarlo al txt y a la base de datos
-        mensaje = "Se ha creado la Base de Datos de pokémons"
+    respuesta = requests.get(urlID) #200 si está ok, 400 si tiene un error, 500 si no se encuentra
+    if respuesta.ok: 
+        info = respuesta.json()
+        salud = obtenerEstadisticaPuntoSalud(info)
+        ataque = obtenerEstadisticaAtaque(info)
+        defensa = obtenerEstadisticaDefensa(info)
+        ataqueEspecial = obtenerEstadisticaAtaqueEspecial(info)
+        defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
+        velocidad = obtenerEstadisticaVelocidad(info)
+        totalStats = obtenerTotalEstadistica(info)
+        info = respuesta.json()
+        pokemonsA[int(id)] = [info['name'],
+                                         (validarShiny(info), obtenerPeso(info['weight']), obtenerAltura(info['height'])), # (esShiny, peso, altura)
+                                         [totalStats, (salud, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad)], # [totalEstad, (PS, A, D, AE, DE, V)]
+                                         (obtenerTipo(info, 0), obtenerTipo(info, 1)), # (listaDeTipos, listaDeTipos)
+                                          obtenerImagen(info) # url
+                                        ]
+        graba(misPokemonsAtrapadosPkl, pokemonsA)
+        diccionarioActualizado = lee(misPokemonsAtrapadosPkl)
+        #print(diccionarioActualizado) # Borrar luego -----------------
+        nombre = info['name']
+        agregarPokemonIDTxt(id, nombre)
+        mensaje = f"Se ha guardado el pokemon {id} en el diccionario."
         ventanaConfirmacion(mensaje)
     else:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {respuesta.status_code}")
     print(f"Se ha agregado el id: {id}.")
+
+def obtenerIDBuscados(txtPokemons):
+    listaID = []
+    listaPokemons = txtPokemons.split("\n")[:-1]
+    for pokemon in listaPokemons:
+        infoPokemon = pokemon.split("^")
+        listaID.append(infoPokemon[0])
+    print(listaID)
+    return listaID
 
 def validarAtraparPokemon(id):
     limite = obtenerLimitePokemon()
-    pokemonsBuscados = leeTxt(misPokemonsTxt)
-    pokemonsBuscados = pokemonsBuscados.split("\n")[:-1]
-    cantidad = len(pokemonsBuscados)
+    pokemonsA = lee(misPokemonsAtrapadosPkl)
     try:
-        if int(id) < 0:
+        if int(id) <= 0:
             mensaje = "El valor tiene que ser un número mayor a 0."
             return ventanaRetroalimentacion(mensaje)
-        elif int(id) <= cantidad:
-            mensaje = "El ID ya se encontraba en la base de datos."
+        elif int(id) in pokemonsA:
+            mensaje = "El ID ya se encontraba en el diccionario."
             return ventanaRetroalimentacion(mensaje)
         elif int(id) > limite:
             mensaje = "Excediste el límite de pokémons dentro del API."
             return ventanaRetroalimentacion(mensaje)
         else:
-            return atraparPokemonID(id)
+            return atraparPokemonID(id, pokemonsA)
     except ValueError:
         mensaje = "El valor tiene que ser un número entero."
         return ventanaRetroalimentacion(mensaje)
@@ -324,6 +365,7 @@ def crarArchivoShiny():
 ##################################################
 # 6. Xml
 ##################################################
+"""
 lineasPokemons = leeTxtLineas(misPokemonsTxt)
 pokemonsXml = "pokemons.xml"
 statsTotales={}
@@ -354,7 +396,7 @@ def generarXml():
     with open(pokemonsXml, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lineasXml))
     print(f"Archivo XML generado: {pokemonsXml}")
-
+"""
 ##################################################
 # 5. Descarga
 ##################################################
@@ -763,46 +805,32 @@ def main():
     frame = tk.Frame(root, padx=10, pady=10)
     frame.pack()
 
-    #global button1
     diccGlobal["botones"]["boton1"] = tk.Button(frame, width=20, text="1. Búsqueda", command=ventanaBuscar)
     diccGlobal["botones"]["boton1"].grid(row=1, column=0)    
-    #global button2
     diccGlobal["botones"]["boton2"] = tk.Button(frame, text="2. Atrapar", width=20, command=ventanaAtrapar)
     diccGlobal["botones"]["boton2"].grid(row=2, column=0)
-    #global button3
     diccGlobal["botones"]["boton3"] = tk.Button(frame, text="3. Pokédex", width=20, command=ventanaPokedex)
     diccGlobal["botones"]["boton3"].grid(row=3, column=0) 
-    #global button4
-    diccGlobal["botones"]["boton4"] = tk.Button(frame, text="4. Detalle", width=20, state="disabled")
+    diccGlobal["botones"]["boton4"] = tk.Button(frame, text="4. Detalle", width=20, state="disabled") #nunca se va a usar
     diccGlobal["botones"]["boton4"].grid(row=4, column=0)
-    #global button5
     diccGlobal["botones"]["boton5"] = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
     diccGlobal["botones"]["boton5"].grid(row=5, column=0)
-    #global button6
-    diccGlobal["botones"]["boton6"] = tk.Button(frame, text="6. XML", width=20, command=generarXml)
+    diccGlobal["botones"]["boton6"] = tk.Button(frame, text="6. XML", width=20)#, command=generarXml)
     diccGlobal["botones"]["boton6"].grid(row=6, column=0)
-    #global button7
     diccGlobal["botones"]["boton7"] = tk.Button(frame, text="7. HTML Desc", width=20)
     diccGlobal["botones"]["boton7"].grid(row=7, column=0)
-    #global button8
     diccGlobal["botones"]["boton8"] = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
     diccGlobal["botones"]["boton8"].grid(row=1, column=1)
-    #global button9
     diccGlobal["botones"]["boton9"] = tk.Button(frame, text="9. Convertidor", width=20, command=diccAMatriz)
     diccGlobal["botones"]["boton9"].grid(row=2, column=1)
-    #global button10
     diccGlobal["botones"]["boton10"] = tk.Button(frame, text="10. Desconvertidor", width=20, command=matrizADicc)
     diccGlobal["botones"]["boton10"].grid(row=3, column=1)
-    #global button11
     diccGlobal["botones"]["boton11"] = tk.Button(frame, text="11. Virus", width=20, command=ventanaVirus)
     diccGlobal["botones"]["boton11"].grid(row=4, column=1)
-    #global button12
     diccGlobal["botones"]["boton12"] = tk.Button(frame, text="12. Agregar", width=20, command=ventanaAgregarPokemon)
     diccGlobal["botones"]["boton12"].grid(row=5, column=1)
-    #global button13
     diccGlobal["botones"]["boton13"] = tk.Button(frame, text="13. Créditos", width=20, command=ventanaCreditos)
     diccGlobal["botones"]["boton13"].grid(row=6, column=1)
-    #global button14
     diccGlobal["botones"]["boton14"] = tk.Button(frame, text="14. Salir", width=20, command=close)
     diccGlobal["botones"]["boton14"].grid(row=7, column=1) 
     validarBotones()

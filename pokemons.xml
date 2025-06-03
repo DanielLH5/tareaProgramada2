@@ -1,0 +1,602 @@
+<Pokemons>
+  <Pokemon id="2">
+    <nombre>ivysaur</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="3">
+    <nombre>venusaur</nombre>
+    <totalEstad>525</totalEstad>
+  </Pokemon>
+  <Pokemon id="5">
+    <nombre>charmeleon</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="6">
+    <nombre>charizard</nombre>
+    <totalEstad>534</totalEstad>
+  </Pokemon>
+  <Pokemon id="7">
+    <nombre>squirtle</nombre>
+    <totalEstad>314</totalEstad>
+  </Pokemon>
+  <Pokemon id="8">
+    <nombre>wartortle</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="9">
+    <nombre>blastoise</nombre>
+    <totalEstad>530</totalEstad>
+  </Pokemon>
+  <Pokemon id="10">
+    <nombre>caterpie</nombre>
+    <totalEstad>195</totalEstad>
+  </Pokemon>
+  <Pokemon id="12">
+    <nombre>butterfree</nombre>
+    <totalEstad>395</totalEstad>
+  </Pokemon>
+  <Pokemon id="13">
+    <nombre>weedle</nombre>
+    <totalEstad>195</totalEstad>
+  </Pokemon>
+  <Pokemon id="15">
+    <nombre>beedrill</nombre>
+    <totalEstad>395</totalEstad>
+  </Pokemon>
+  <Pokemon id="20">
+    <nombre>raticate</nombre>
+    <totalEstad>413</totalEstad>
+  </Pokemon>
+  <Pokemon id="21">
+    <nombre>spearow</nombre>
+    <totalEstad>262</totalEstad>
+  </Pokemon>
+  <Pokemon id="22">
+    <nombre>fearow</nombre>
+    <totalEstad>442</totalEstad>
+  </Pokemon>
+  <Pokemon id="23">
+    <nombre>ekans</nombre>
+    <totalEstad>288</totalEstad>
+  </Pokemon>
+  <Pokemon id="25">
+    <nombre>pikachu</nombre>
+    <totalEstad>320</totalEstad>
+  </Pokemon>
+  <Pokemon id="26">
+    <nombre>raichu</nombre>
+    <totalEstad>485</totalEstad>
+  </Pokemon>
+  <Pokemon id="27">
+    <nombre>sandshrew</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="28">
+    <nombre>sandslas</nombre>
+    <totalEstad>450</totalEstad>
+  </Pokemon>
+  <Pokemon id="31">
+    <nombre>nidoqueen</nombre>
+    <totalEstad>505</totalEstad>
+  </Pokemon>
+  <Pokemon id="32">
+    <nombre>nidoran-m</nombre>
+    <totalEstad>273</totalEstad>
+  </Pokemon>
+  <Pokemon id="34">
+    <nombre>nidoking</nombre>
+    <totalEstad>505</totalEstad>
+  </Pokemon>
+  <Pokemon id="35">
+    <nombre>clefairy</nombre>
+    <totalEstad>323</totalEstad>
+  </Pokemon>
+  <Pokemon id="36">
+    <nombre>clefable</nombre>
+    <totalEstad>483</totalEstad>
+  </Pokemon>
+  <Pokemon id="40">
+    <nombre>wigglytuff</nombre>
+    <totalEstad>435</totalEstad>
+  </Pokemon>
+  <Pokemon id="41">
+    <nombre>zubat</nombre>
+    <totalEstad>245</totalEstad>
+  </Pokemon>
+  <Pokemon id="42">
+    <nombre>golbat</nombre>
+    <totalEstad>455</totalEstad>
+  </Pokemon>
+  <Pokemon id="43">
+    <nombre>oddis</nombre>
+    <totalEstad>320</totalEstad>
+  </Pokemon>
+  <Pokemon id="44">
+    <nombre>gloom</nombre>
+    <totalEstad>395</totalEstad>
+  </Pokemon>
+  <Pokemon id="47">
+    <nombre>parasect</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="48">
+    <nombre>venonat</nombre>
+    <totalEstad>305</totalEstad>
+  </Pokemon>
+  <Pokemon id="50">
+    <nombre>diglett</nombre>
+    <totalEstad>265</totalEstad>
+  </Pokemon>
+  <Pokemon id="51">
+    <nombre>dugtrio</nombre>
+    <totalEstad>425</totalEstad>
+  </Pokemon>
+  <Pokemon id="54">
+    <nombre>psyduck</nombre>
+    <totalEstad>320</totalEstad>
+  </Pokemon>
+  <Pokemon id="57">
+    <nombre>primeape</nombre>
+    <totalEstad>455</totalEstad>
+  </Pokemon>
+  <Pokemon id="58">
+    <nombre>growlithe</nombre>
+    <totalEstad>350</totalEstad>
+  </Pokemon>
+  <Pokemon id="60">
+    <nombre>poliwag</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="61">
+    <nombre>poliwhirl</nombre>
+    <totalEstad>385</totalEstad>
+  </Pokemon>
+  <Pokemon id="62">
+    <nombre>poliwrat</nombre>
+    <totalEstad>510</totalEstad>
+  </Pokemon>
+  <Pokemon id="63">
+    <nombre>abr</nombre>
+    <totalEstad>310</totalEstad>
+  </Pokemon>
+  <Pokemon id="64">
+    <nombre>kadabr</nombre>
+    <totalEstad>400</totalEstad>
+  </Pokemon>
+  <Pokemon id="66">
+    <nombre>machop</nombre>
+    <totalEstad>305</totalEstad>
+  </Pokemon>
+  <Pokemon id="68">
+    <nombre>machamp</nombre>
+    <totalEstad>505</totalEstad>
+  </Pokemon>
+  <Pokemon id="69">
+    <nombre>bellsprout</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="71">
+    <nombre>victreebel</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="72">
+    <nombre>tentacool</nombre>
+    <totalEstad>335</totalEstad>
+  </Pokemon>
+  <Pokemon id="74">
+    <nombre>geodude</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="78">
+    <nombre>rapidas</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="79">
+    <nombre>slowpoke</nombre>
+    <totalEstad>315</totalEstad>
+  </Pokemon>
+  <Pokemon id="80">
+    <nombre>slowbro</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="81">
+    <nombre>magnemite</nombre>
+    <totalEstad>325</totalEstad>
+  </Pokemon>
+  <Pokemon id="84">
+    <nombre>doduo</nombre>
+    <totalEstad>310</totalEstad>
+  </Pokemon>
+  <Pokemon id="85">
+    <nombre>dodrio</nombre>
+    <totalEstad>470</totalEstad>
+  </Pokemon>
+  <Pokemon id="86">
+    <nombre>seel</nombre>
+    <totalEstad>325</totalEstad>
+  </Pokemon>
+  <Pokemon id="87">
+    <nombre>dewgong</nombre>
+    <totalEstad>475</totalEstad>
+  </Pokemon>
+  <Pokemon id="88">
+    <nombre>grimer</nombre>
+    <totalEstad>325</totalEstad>
+  </Pokemon>
+  <Pokemon id="89">
+    <nombre>muk</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="92">
+    <nombre>gastly</nombre>
+    <totalEstad>310</totalEstad>
+  </Pokemon>
+  <Pokemon id="93">
+    <nombre>haunter</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="95">
+    <nombre>onix</nombre>
+    <totalEstad>385</totalEstad>
+  </Pokemon>
+  <Pokemon id="96">
+    <nombre>drowzee</nombre>
+    <totalEstad>328</totalEstad>
+  </Pokemon>
+  <Pokemon id="97">
+    <nombre>hypno</nombre>
+    <totalEstad>483</totalEstad>
+  </Pokemon>
+  <Pokemon id="101">
+    <nombre>electrode</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="103">
+    <nombre>exeggutor</nombre>
+    <totalEstad>530</totalEstad>
+  </Pokemon>
+  <Pokemon id="104">
+    <nombre>cubone</nombre>
+    <totalEstad>320</totalEstad>
+  </Pokemon>
+  <Pokemon id="105">
+    <nombre>marowak</nombre>
+    <totalEstad>425</totalEstad>
+  </Pokemon>
+  <Pokemon id="106">
+    <nombre>hitmonlee</nombre>
+    <totalEstad>455</totalEstad>
+  </Pokemon>
+  <Pokemon id="108">
+    <nombre>lickitung</nombre>
+    <totalEstad>385</totalEstad>
+  </Pokemon>
+  <Pokemon id="109">
+    <nombre>koffing</nombre>
+    <totalEstad>340</totalEstad>
+  </Pokemon>
+  <Pokemon id="111">
+    <nombre>rhyhorn</nombre>
+    <totalEstad>345</totalEstad>
+  </Pokemon>
+  <Pokemon id="113">
+    <nombre>chansey</nombre>
+    <totalEstad>450</totalEstad>
+  </Pokemon>
+  <Pokemon id="114">
+    <nombre>tangel</nombre>
+    <totalEstad>435</totalEstad>
+  </Pokemon>
+  <Pokemon id="116">
+    <nombre>horse</nombre>
+    <totalEstad>295</totalEstad>
+  </Pokemon>
+  <Pokemon id="117">
+    <nombre>seadr</nombre>
+    <totalEstad>440</totalEstad>
+  </Pokemon>
+  <Pokemon id="119">
+    <nombre>seaking</nombre>
+    <totalEstad>450</totalEstad>
+  </Pokemon>
+  <Pokemon id="120">
+    <nombre>staryu</nombre>
+    <totalEstad>340</totalEstad>
+  </Pokemon>
+  <Pokemon id="125">
+    <nombre>electabuzz</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="130">
+    <nombre>gyarados</nombre>
+    <totalEstad>540</totalEstad>
+  </Pokemon>
+  <Pokemon id="132">
+    <nombre>ditto</nombre>
+    <totalEstad>288</totalEstad>
+  </Pokemon>
+  <Pokemon id="133">
+    <nombre>eevee</nombre>
+    <totalEstad>325</totalEstad>
+  </Pokemon>
+  <Pokemon id="134">
+    <nombre>vaporeon</nombre>
+    <totalEstad>525</totalEstad>
+  </Pokemon>
+  <Pokemon id="137">
+    <nombre>porygon</nombre>
+    <totalEstad>395</totalEstad>
+  </Pokemon>
+  <Pokemon id="139">
+    <nombre>omastar</nombre>
+    <totalEstad>495</totalEstad>
+  </Pokemon>
+  <Pokemon id="142">
+    <nombre>aerodactyl</nombre>
+    <totalEstad>515</totalEstad>
+  </Pokemon>
+  <Pokemon id="143">
+    <nombre>snorlax</nombre>
+    <totalEstad>540</totalEstad>
+  </Pokemon>
+  <Pokemon id="144">
+    <nombre>articuno</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="145">
+    <nombre>zapdos</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="146">
+    <nombre>moltres</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="147">
+    <nombre>dratini</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="148">
+    <nombre>dragonair</nombre>
+    <totalEstad>420</totalEstad>
+  </Pokemon>
+  <Pokemon id="150">
+    <nombre>mewtwo</nombre>
+    <totalEstad>680</totalEstad>
+  </Pokemon>
+  <Pokemon id="152">
+    <nombre>chikorit</nombre>
+    <totalEstad>318</totalEstad>
+  </Pokemon>
+  <Pokemon id="156">
+    <nombre>quilav</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="157">
+    <nombre>typhlosion</nombre>
+    <totalEstad>534</totalEstad>
+  </Pokemon>
+  <Pokemon id="158">
+    <nombre>totodile</nombre>
+    <totalEstad>314</totalEstad>
+  </Pokemon>
+  <Pokemon id="160">
+    <nombre>feraligatr</nombre>
+    <totalEstad>530</totalEstad>
+  </Pokemon>
+  <Pokemon id="161">
+    <nombre>sentret</nombre>
+    <totalEstad>215</totalEstad>
+  </Pokemon>
+  <Pokemon id="163">
+    <nombre>hoothoot</nombre>
+    <totalEstad>262</totalEstad>
+  </Pokemon>
+  <Pokemon id="165">
+    <nombre>ledyb</nombre>
+    <totalEstad>265</totalEstad>
+  </Pokemon>
+  <Pokemon id="166">
+    <nombre>ledian</nombre>
+    <totalEstad>390</totalEstad>
+  </Pokemon>
+  <Pokemon id="167">
+    <nombre>spinarak</nombre>
+    <totalEstad>250</totalEstad>
+  </Pokemon>
+  <Pokemon id="168">
+    <nombre>ariados</nombre>
+    <totalEstad>400</totalEstad>
+  </Pokemon>
+  <Pokemon id="171">
+    <nombre>lanturn</nombre>
+    <totalEstad>460</totalEstad>
+  </Pokemon>
+  <Pokemon id="175">
+    <nombre>togepi</nombre>
+    <totalEstad>245</totalEstad>
+  </Pokemon>
+  <Pokemon id="178">
+    <nombre>xatu</nombre>
+    <totalEstad>470</totalEstad>
+  </Pokemon>
+  <Pokemon id="179">
+    <nombre>mareep</nombre>
+    <totalEstad>280</totalEstad>
+  </Pokemon>
+  <Pokemon id="180">
+    <nombre>flaaffy</nombre>
+    <totalEstad>365</totalEstad>
+  </Pokemon>
+  <Pokemon id="181">
+    <nombre>ampharos</nombre>
+    <totalEstad>510</totalEstad>
+  </Pokemon>
+  <Pokemon id="183">
+    <nombre>marill</nombre>
+    <totalEstad>250</totalEstad>
+  </Pokemon>
+  <Pokemon id="184">
+    <nombre>azumarill</nombre>
+    <totalEstad>420</totalEstad>
+  </Pokemon>
+  <Pokemon id="185">
+    <nombre>sudowoodo</nombre>
+    <totalEstad>410</totalEstad>
+  </Pokemon>
+  <Pokemon id="188">
+    <nombre>skiploom</nombre>
+    <totalEstad>340</totalEstad>
+  </Pokemon>
+  <Pokemon id="191">
+    <nombre>sunkern</nombre>
+    <totalEstad>180</totalEstad>
+  </Pokemon>
+  <Pokemon id="192">
+    <nombre>sunflor</nombre>
+    <totalEstad>425</totalEstad>
+  </Pokemon>
+  <Pokemon id="193">
+    <nombre>yanm</nombre>
+    <totalEstad>390</totalEstad>
+  </Pokemon>
+  <Pokemon id="196">
+    <nombre>espeon</nombre>
+    <totalEstad>525</totalEstad>
+  </Pokemon>
+  <Pokemon id="198">
+    <nombre>murkrow</nombre>
+    <totalEstad>405</totalEstad>
+  </Pokemon>
+  <Pokemon id="199">
+    <nombre>slowking</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="201">
+    <nombre>unown</nombre>
+    <totalEstad>336</totalEstad>
+  </Pokemon>
+  <Pokemon id="203">
+    <nombre>girafarig</nombre>
+    <totalEstad>455</totalEstad>
+  </Pokemon>
+  <Pokemon id="204">
+    <nombre>pineco</nombre>
+    <totalEstad>290</totalEstad>
+  </Pokemon>
+  <Pokemon id="205">
+    <nombre>forretress</nombre>
+    <totalEstad>465</totalEstad>
+  </Pokemon>
+  <Pokemon id="207">
+    <nombre>gligar</nombre>
+    <totalEstad>430</totalEstad>
+  </Pokemon>
+  <Pokemon id="208">
+    <nombre>steelix</nombre>
+    <totalEstad>510</totalEstad>
+  </Pokemon>
+  <Pokemon id="209">
+    <nombre>snubbull</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="211">
+    <nombre>qwilfis</nombre>
+    <totalEstad>440</totalEstad>
+  </Pokemon>
+  <Pokemon id="212">
+    <nombre>scizor</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="213">
+    <nombre>shuckle</nombre>
+    <totalEstad>505</totalEstad>
+  </Pokemon>
+  <Pokemon id="214">
+    <nombre>heracross</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="216">
+    <nombre>teddiurs</nombre>
+    <totalEstad>330</totalEstad>
+  </Pokemon>
+  <Pokemon id="217">
+    <nombre>ursaring</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="220">
+    <nombre>swinub</nombre>
+    <totalEstad>250</totalEstad>
+  </Pokemon>
+  <Pokemon id="221">
+    <nombre>piloswine</nombre>
+    <totalEstad>450</totalEstad>
+  </Pokemon>
+  <Pokemon id="226">
+    <nombre>mantine</nombre>
+    <totalEstad>485</totalEstad>
+  </Pokemon>
+  <Pokemon id="227">
+    <nombre>skarmory</nombre>
+    <totalEstad>465</totalEstad>
+  </Pokemon>
+  <Pokemon id="228">
+    <nombre>houndour</nombre>
+    <totalEstad>330</totalEstad>
+  </Pokemon>
+  <Pokemon id="231">
+    <nombre>phanpy</nombre>
+    <totalEstad>330</totalEstad>
+  </Pokemon>
+  <Pokemon id="232">
+    <nombre>donphan</nombre>
+    <totalEstad>500</totalEstad>
+  </Pokemon>
+  <Pokemon id="234">
+    <nombre>stantler</nombre>
+    <totalEstad>465</totalEstad>
+  </Pokemon>
+  <Pokemon id="235">
+    <nombre>smeargle</nombre>
+    <totalEstad>250</totalEstad>
+  </Pokemon>
+  <Pokemon id="238">
+    <nombre>smoochum</nombre>
+    <totalEstad>305</totalEstad>
+  </Pokemon>
+  <Pokemon id="241">
+    <nombre>miltank</nombre>
+    <totalEstad>490</totalEstad>
+  </Pokemon>
+  <Pokemon id="242">
+    <nombre>blissey</nombre>
+    <totalEstad>540</totalEstad>
+  </Pokemon>
+  <Pokemon id="243">
+    <nombre>raikou</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="244">
+    <nombre>entei</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="245">
+    <nombre>suicune</nombre>
+    <totalEstad>580</totalEstad>
+  </Pokemon>
+  <Pokemon id="246">
+    <nombre>larvitar</nombre>
+    <totalEstad>300</totalEstad>
+  </Pokemon>
+  <Pokemon id="247">
+    <nombre>pupitar</nombre>
+    <totalEstad>410</totalEstad>
+  </Pokemon>
+  <Pokemon id="248">
+    <nombre>tyranitar</nombre>
+    <totalEstad>600</totalEstad>
+  </Pokemon>
+  <Pokemon id="250">
+    <nombre>ho-o</nombre>
+    <totalEstad>680</totalEstad>
+  </Pokemon>
+</Pokemons>

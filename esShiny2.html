@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>esShiny</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: lightgray;
+        }
+        img {
+            width: 80px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Peso</th>
+            <th>Altura</th>
+            <th>Total Estadísticas</th>
+            <th>Estadísticas</th>
+            <th>Tipos</th>
+            <th>Imagen</th>
+        </tr>
+    <tr>
+        <td>77</td>
+        <td>ponyta</td>
+        <td>3000</td>
+        <td>100</td>
+        <td>410</td>
+        <td>(50, 85, 55, 65, 65, 90)</td>
+        <td>('fire', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/77.png></td>
+    </tr>
+    <tr>
+        <td>208</td>
+        <td>steelix</td>
+        <td>40000</td>
+        <td>920</td>
+        <td>510</td>
+        <td>(75, 85, 200, 55, 65, 30)</td>
+        <td>('steel', 'ground')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/208.png></td>
+    </tr>
+    <tr>
+        <td>40</td>
+        <td>wigglytuff</td>
+        <td>1200</td>
+        <td>100</td>
+        <td>435</td>
+        <td>(140, 70, 45, 85, 50, 45)</td>
+        <td>('normal', 'fairy')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/40.png></td>
+    </tr>
+    <tr>
+        <td>176</td>
+        <td>togetic</td>
+        <td>320</td>
+        <td>60</td>
+        <td>405</td>
+        <td>(55, 40, 85, 80, 105, 40)</td>
+        <td>('fairy', 'flying')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/176.png></td>
+    </tr>
+    <tr>
+        <td>197</td>
+        <td>umbreon</td>
+        <td>2700</td>
+        <td>100</td>
+        <td>525</td>
+        <td>(95, 65, 110, 60, 130, 65)</td>
+        <td>('dark', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/197.png></td>
+    </tr>
+    <tr>
+        <td>246</td>
+        <td>larvitar</td>
+        <td>7200</td>
+        <td>60</td>
+        <td>300</td>
+        <td>(50, 64, 50, 45, 50, 41)</td>
+        <td>('rock', 'ground')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/246.png></td>
+    </tr>
+    <tr>
+        <td>116</td>
+        <td>horsea</td>
+        <td>800</td>
+        <td>40</td>
+        <td>295</td>
+        <td>(30, 40, 70, 70, 25, 60)</td>
+        <td>('water', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/116.png></td>
+    </tr>
+    <tr>
+        <td>131</td>
+        <td>lapras</td>
+        <td>22000</td>
+        <td>250</td>
+        <td>535</td>
+        <td>(130, 85, 80, 85, 95, 60)</td>
+        <td>('water', 'ice')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/131.png></td>
+    </tr>
+    <tr>
+        <td>212</td>
+        <td>scizor</td>
+        <td>11800</td>
+        <td>180</td>
+        <td>500</td>
+        <td>(70, 130, 100, 55, 80, 65)</td>
+        <td>('bug', 'steel')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/212.png></td>
+    </tr>
+    <tr>
+        <td>106</td>
+        <td>hitmonlee</td>
+        <td>4980</td>
+        <td>150</td>
+        <td>455</td>
+        <td>(50, 120, 53, 35, 110, 87)</td>
+        <td>('fighting', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/106.png></td>
+    </tr>
+    <tr>
+        <td>195</td>
+        <td>quagsire</td>
+        <td>7500</td>
+        <td>140</td>
+        <td>430</td>
+        <td>(95, 85, 85, 65, 65, 35)</td>
+        <td>('water', 'ground')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/195.png></td>
+    </tr>
+    <tr>
+        <td>243</td>
+        <td>raikou</td>
+        <td>17800</td>
+        <td>190</td>
+        <td>580</td>
+        <td>(90, 85, 75, 115, 100, 115)</td>
+        <td>('electric', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/243.png></td>
+    </tr>
+    <tr>
+        <td>56</td>
+        <td>mankey</td>
+        <td>2800</td>
+        <td>50</td>
+        <td>305</td>
+        <td>(40, 80, 35, 35, 45, 70)</td>
+        <td>('fighting', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/56.png></td>
+    </tr>
+    <tr>
+        <td>102</td>
+        <td>exeggcute</td>
+        <td>250</td>
+        <td>40</td>
+        <td>325</td>
+        <td>(60, 40, 80, 60, 45, 40)</td>
+        <td>('grass', 'psychic')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/102.png></td>
+    </tr>
+    <tr>
+        <td>119</td>
+        <td>seaking</td>
+        <td>3900</td>
+        <td>130</td>
+        <td>450</td>
+        <td>(80, 92, 65, 65, 80, 68)</td>
+        <td>('water', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/119.png></td>
+    </tr>
+    <tr>
+        <td>210</td>
+        <td>granbull</td>
+        <td>4870</td>
+        <td>140</td>
+        <td>450</td>
+        <td>(90, 120, 75, 60, 60, 45)</td>
+        <td>('fairy', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/210.png></td>
+    </tr>
+    <tr>
+        <td>49</td>
+        <td>venomoth</td>
+        <td>1250</td>
+        <td>150</td>
+        <td>450</td>
+        <td>(70, 65, 60, 90, 75, 90)</td>
+        <td>('bug', 'poison')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/49.png></td>
+    </tr>
+    <tr>
+        <td>234</td>
+        <td>stantler</td>
+        <td>7120</td>
+        <td>140</td>
+        <td>465</td>
+        <td>(73, 95, 62, 85, 65, 85)</td>
+        <td>('normal', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/234.png></td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>caterpie</td>
+        <td>290</td>
+        <td>30</td>
+        <td>195</td>
+        <td>(45, 30, 35, 20, 20, 45)</td>
+        <td>('bug', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10.png></td>
+    </tr>
+    <tr>
+        <td>96</td>
+        <td>drowzee</td>
+        <td>3240</td>
+        <td>100</td>
+        <td>328</td>
+        <td>(60, 48, 45, 43, 90, 42)</td>
+        <td>('psychic', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/96.png></td>
+    </tr>
+    <tr>
+        <td>244</td>
+        <td>entei</td>
+        <td>19800</td>
+        <td>210</td>
+        <td>580</td>
+        <td>(115, 115, 85, 90, 75, 100)</td>
+        <td>('fire', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/244.png></td>
+    </tr>
+    <tr>
+        <td>42</td>
+        <td>golbat</td>
+        <td>5500</td>
+        <td>160</td>
+        <td>455</td>
+        <td>(75, 80, 70, 65, 75, 90)</td>
+        <td>('poison', 'flying')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/42.png></td>
+    </tr>
+    <tr>
+        <td>192</td>
+        <td>sunflora</td>
+        <td>850</td>
+        <td>80</td>
+        <td>425</td>
+        <td>(75, 75, 55, 105, 85, 30)</td>
+        <td>('grass', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/192.png></td>
+    </tr>
+    <tr>
+        <td>165</td>
+        <td>ledyba</td>
+        <td>1080</td>
+        <td>100</td>
+        <td>265</td>
+        <td>(40, 20, 30, 40, 80, 55)</td>
+        <td>('bug', 'flying')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/165.png></td>
+    </tr>
+    <tr>
+        <td>128</td>
+        <td>tauros</td>
+        <td>8840</td>
+        <td>140</td>
+        <td>490</td>
+        <td>(75, 100, 95, 40, 70, 110)</td>
+        <td>('normal', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/128.png></td>
+    </tr>
+    <tr>
+        <td>196</td>
+        <td>espeon</td>
+        <td>2650</td>
+        <td>90</td>
+        <td>525</td>
+        <td>(65, 65, 60, 130, 95, 110)</td>
+        <td>('psychic', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/196.png></td>
+    </tr>
+    <tr>
+        <td>95</td>
+        <td>onix</td>
+        <td>21000</td>
+        <td>880</td>
+        <td>385</td>
+        <td>(35, 45, 160, 30, 45, 70)</td>
+        <td>('rock', 'ground')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/95.png></td>
+    </tr>
+    <tr>
+        <td>156</td>
+        <td>quilava</td>
+        <td>1900</td>
+        <td>90</td>
+        <td>405</td>
+        <td>(58, 64, 58, 80, 65, 80)</td>
+        <td>('fire', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/156.png></td>
+    </tr>
+    <tr>
+        <td>230</td>
+        <td>kingdra</td>
+        <td>15200</td>
+        <td>180</td>
+        <td>540</td>
+        <td>(75, 95, 95, 95, 95, 85)</td>
+        <td>('water', 'dragon')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/230.png></td>
+    </tr>
+    <tr>
+        <td>215</td>
+        <td>sneasel</td>
+        <td>2800</td>
+        <td>90</td>
+        <td>430</td>
+        <td>(55, 95, 55, 35, 75, 115)</td>
+        <td>('dark', 'ice')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/215.png></td>
+    </tr>
+    <tr>
+        <td>117</td>
+        <td>seadra</td>
+        <td>2500</td>
+        <td>120</td>
+        <td>440</td>
+        <td>(55, 65, 95, 95, 45, 85)</td>
+        <td>('water', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/117.png></td>
+    </tr>
+    <tr>
+        <td>213</td>
+        <td>shuckle</td>
+        <td>2050</td>
+        <td>60</td>
+        <td>505</td>
+        <td>(20, 10, 230, 10, 230, 5)</td>
+        <td>('bug', 'rock')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/213.png></td>
+    </tr>
+    <tr>
+        <td>168</td>
+        <td>ariados</td>
+        <td>3350</td>
+        <td>110</td>
+        <td>400</td>
+        <td>(70, 90, 70, 60, 70, 40)</td>
+        <td>('bug', 'poison')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/168.png></td>
+    </tr>
+    <tr>
+        <td>97</td>
+        <td>hypno</td>
+        <td>7560</td>
+        <td>160</td>
+        <td>483</td>
+        <td>(85, 73, 70, 73, 115, 67)</td>
+        <td>('psychic', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/97.png></td>
+    </tr>
+    <tr>
+        <td>203</td>
+        <td>girafarig</td>
+        <td>4150</td>
+        <td>150</td>
+        <td>455</td>
+        <td>(70, 80, 65, 90, 65, 85)</td>
+        <td>('normal', 'psychic')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/203.png></td>
+    </tr>
+    <tr>
+        <td>114</td>
+        <td>tangela</td>
+        <td>3500</td>
+        <td>100</td>
+        <td>435</td>
+        <td>(65, 55, 115, 100, 40, 60)</td>
+        <td>('grass', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/114.png></td>
+    </tr>
+    <tr>
+        <td>90</td>
+        <td>shellder</td>
+        <td>400</td>
+        <td>30</td>
+        <td>305</td>
+        <td>(30, 65, 100, 45, 25, 40)</td>
+        <td>('water', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/90.png></td>
+    </tr>
+    <tr>
+        <td>250</td>
+        <td>ho-oh</td>
+        <td>19900</td>
+        <td>380</td>
+        <td>680</td>
+        <td>(106, 130, 90, 110, 154, 90)</td>
+        <td>('fire', 'flying')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/250.png></td>
+    </tr>
+    <tr>
+        <td>111</td>
+        <td>rhyhorn</td>
+        <td>11500</td>
+        <td>100</td>
+        <td>345</td>
+        <td>(80, 85, 95, 30, 30, 25)</td>
+        <td>('ground', 'rock')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/111.png></td>
+    </tr>
+    <tr>
+        <td>107</td>
+        <td>hitmonchan</td>
+        <td>5020</td>
+        <td>140</td>
+        <td>455</td>
+        <td>(50, 105, 79, 35, 110, 76)</td>
+        <td>('fighting', '')</td>
+        <td><img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/107.png></td>
+    </tr>
+    </table>
+</body>
+</html>
+        

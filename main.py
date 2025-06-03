@@ -1,11 +1,16 @@
+###########################################################
+#Elaborado por: Daniel Liao Huang y Ethan Hernández Cubillo
+#Fecha de Realización: 16/05/2025
+#Última actualización: 04/06/2025
+#Versión: 3.13.3
+###########################################################
+
 """
 python -m pip install requests
 """
 import tkinter as tk
 import requests
 import random 
-import csv
-import re
 from tkinter import PhotoImage
 import urllib.request
 from io import BytesIO
@@ -66,27 +71,7 @@ def ventanaCreditos():
 
 ##################################################
 # 12. Agregar Pokémon
-##################################################
-
-def agregarPokemonIDTxt(id, nombre):
-    txtPokemons = leeTxt(misPokemonsTxt)
-    listaID = obtenerIDBuscados(txtPokemons)
-    nuevoPokemon = f"{id}^{nombre}^a"
-    #print(nuevoPokemon) # Borrar luego -----------------
-    txtPokemonsActualizado = ""
-    if id not in listaID:
-        agregarTxt(misPokemonsTxt, nuevoPokemon)
-        #txtActualizado = leeTxt(misPokemonsTxt) # Borrar luego -----------------
-        #print(txtActualizado) # Borrar luego -----------------
-    else:
-        listaPokemons = txtPokemons.split("\n")[:-1]
-        for pokemon in listaPokemons:
-            if re.fullmatch(f"^{id}\\^[a-z\\-]+\\^[a-z]$", pokemon):
-                txtPokemonsActualizado += f"{nuevoPokemon}\n"
-            else:
-                txtPokemonsActualizado += f"{pokemon}\n"
-        print(txtPokemonsActualizado)
-            
+##################################################        
 def atraparPokemonID(id, pokemonsA):
     urlID = f"https://pokeapi.co/api/v2/pokemon/{id}/"
     respuesta = requests.get(urlID) #200 si está ok, 400 si tiene un error, 500 si no se encuentra
@@ -107,8 +92,8 @@ def atraparPokemonID(id, pokemonsA):
                                           obtenerImagen(info) # url
                                         ]
         graba(misPokemonsAtrapadosPkl, pokemonsA)
-        diccionarioActualizado = lee(misPokemonsAtrapadosPkl) # Borrar luego -----------------
-        print(diccionarioActualizado) # Borrar luego -----------------
+        diccionarioActualizado = lee(misPokemonsAtrapadosPkl) 
+        print(diccionarioActualizado) 
         nombre = info['name']
         agregarPokemonIDTxt(id, nombre)
         mensaje = f"Se ha guardado el pokemon {id} en el diccionario."
@@ -116,15 +101,6 @@ def atraparPokemonID(id, pokemonsA):
     else:
         print(f"Error: {respuesta.status_code}")
     print(f"Se ha agregado el id: {id}.")
-
-def obtenerIDBuscados(txtPokemons):
-    listaID = []
-    listaPokemons = txtPokemons.split("\n")[:-1]
-    for pokemon in listaPokemons:
-        infoPokemon = pokemon.split("^")
-        listaID.append(infoPokemon[0])
-    #print(listaID) # Borrar luego -----------------
-    return listaID
 
 def validarAtraparPokemon(id):
     limite = obtenerLimitePokemon()
@@ -163,25 +139,6 @@ def ventanaAgregarPokemon():
 # 11. Virus
 ##################################################
 
-def manipularEstadisticas(cambio, porcentaje, estadisticas):
-    listaEstadisticas = []
-    porcentaje = int(porcentaje)
-    cambio = int(cambio)
-    if cambio == 1:
-        porcentaje = -(porcentaje)
-    totalEstad = 0
-    totalEstad = estadisticas[0] + estadisticas[0] * (porcentaje/100)
-    totalEstad = round(totalEstad, 2)
-    listaEstadisticas.append(totalEstad)
-    statsIndividuales = []
-    for estad in estadisticas[1]:
-        stat = estad + estad * (porcentaje/100)
-        stat = round(stat, 2)
-        statsIndividuales.append(stat)
-    statsIndividuales = tuple(statsIndividuales)
-    listaEstadisticas.append(statsIndividuales)
-    return listaEstadisticas
-
 def actualizarStatsVirus(cambio, porcentaje):
     pokemonBD = lee(misPokemonsAtrapadosPkl)
     #print(cambio, porcentaje)
@@ -202,17 +159,6 @@ def actualizarStatsVirus(cambio, porcentaje):
         ventanaConfirmacion(mensaje)
         print(diccPokemonVirus)
     ventanaAprobacion(guardarDicc)
-
-def validarPorcentajeVirus(cambio, porcentaje):
-    try:
-        if int(porcentaje) < 0: #Si permite +100%
-            return (False, "El porcentaje debe de ser mayor a 0.")
-        elif int(cambio) == 1 and int(porcentaje) > 100:
-            return (False, "Al disminuir, el porcentaje no puede ser mayor a 100.")
-        else:
-            return (True, "")
-    except ValueError:
-        return (False, "El valor tiene que ser un número entero.")
 
 def verificarPorcentajeVirus(cambio, porcentaje):
     porcentajeValido = validarPorcentajeVirus(cambio, porcentaje)
@@ -302,36 +248,17 @@ def diccAMatriz():
 # 8. esShiny
 ##################################################
 
-def obtenerLimiteShiny(infoAtrapados):
-    limite = 100
-    if len(infoAtrapados) < 100:
-        limite = len(infoAtrapados)
-    return limite
-
-def obtenerIdShiny(infoAtrapados):
-    listaIdShiny = []
-    contador = 0
-    limite = obtenerLimiteShiny(infoAtrapados)
-    for clave, valor in infoAtrapados.items():
-        linkShiny = valor[4]
-        if contador == limite:
-            return listaIdShiny
-        if linkShiny != "":
-            listaIdShiny.append(clave)
-        contador += 1
-    return listaIdShiny
-
 def crarArchivoShiny():
     infoAtrapados = lee(misPokemonsAtrapadosPkl)
-    #print(infoAtrapados) # Borrar luego ---------------
-    listaId = obtenerIdShiny(infoAtrapados)
+    matrizId = obtenerIdShiny(infoAtrapados)
     def crearHTMLShiny():
-        with open("esShiny.html", "w", encoding="utf-8") as archivo:
-            archivo.write("""<!DOCTYPE html>
+        for i, lista in enumerate(matrizId, start=1):
+            with open(f"esShiny{i}.html", "w", encoding="utf-8") as archivo:
+                archivo.write("""<!DOCTYPE html>
 <html lang="es">
 <head>
     <title>esShiny</title>
-    <meta charset="uft-8">
+    <meta charset="utf-8">
     <style>
         body {
             font-family: sans-serif;
@@ -366,8 +293,8 @@ def crarArchivoShiny():
             <th>Tipos</th>
             <th>Imagen</th>
         </tr>""")
-            for id in listaId:
-                archivo.write(f"""
+                for id in lista: #Cada bloque
+                    archivo.write(f"""
     <tr>
         <td>{id}</td>
         <td>{infoAtrapados.get(id)[0]}</td>
@@ -378,7 +305,7 @@ def crarArchivoShiny():
         <td>{infoAtrapados.get(id)[3]}</td>
         <td><img src={infoAtrapados.get(id)[4]}></td>
     </tr>""")
-            archivo.write("""
+                archivo.write("""
     </table>
 </body>
 </html>
@@ -388,52 +315,102 @@ def crarArchivoShiny():
     ventanaAprobacion(crearHTMLShiny)
 
 ##################################################
+# 7. HTML escapados.
+##################################################leeTxtLineas
+
+def generarHtmlDesdeXml():
+    archivoXml = "pokemons.xml"
+    with open(archivoXml, 'r', encoding='utf-8') as f:
+        lineas = f.readlines()
+    def aprobarGeneracionHtml():
+        baseNombreHtml = "huyeron"
+        porPagina = 100
+        pokemons = []
+        idP = None
+        nombre = None
+        total = None
+        for linea in lineas:
+            linea = linea.strip()
+            if linea.startswith('<Pokemon') and 'id="' in linea:
+                try:
+                    idP = int(linea.split('id="')[1].split('"')[0])
+                except (IndexError, ValueError):
+                    continue
+            elif linea.startswith('<nombre>'):
+                nombre = linea.replace('<nombre>', '').replace('</nombre>', '').strip()
+            elif linea.startswith('<totalEstad>'):
+                try:
+                    total = int(linea.replace('<totalEstad>', '').replace('</totalEstad>', '').strip())
+                    if idP is not None and nombre is not None:
+                        pokemons.append((idP, nombre, total))
+                except ValueError:
+                    continue
+        pokemons.sort(key=lambda x: x[2], reverse=True)
+        totalPokemons = len(pokemons)
+        paginas = (totalPokemons // porPagina) + (1 if totalPokemons % porPagina != 0 else 0)
+        contador = 1
+        for pagina in range(paginas):
+            nombreArchivo = f"{baseNombreHtml}{pagina + 1}.html"
+            with open(nombreArchivo, 'w', encoding='utf-8') as archivo:
+                archivo.write("""<html lang="es">
+<head><title>Pokémons Huyeron</title><meta charset="utf-8"></head>
+<body>
+<table border="1">
+<tr><th>#</th><th>ID</th><th>Nombre</th><th>Total Estadísticas</th></tr>
+""")
+                inicio = pagina * porPagina
+                fin = min(inicio + porPagina, totalPokemons)
+                for i in range(inicio, fin):
+                    idP, nombre, total = pokemons[i]
+                    archivo.write(f"<tr><td>{contador}</td><td>{idP}</td><td>{nombre}</td><td>{total}</td></tr>\n")
+                    contador += 1
+                archivo.write("</table>\n</body>\n</html>")
+        print(f"Archivo HTML generado: {nombreArchivo}")
+        mensaje = "Se ha creado el HTML de pokemons huidos."
+        ventanaConfirmacion(mensaje)
+    ventanaAprobacion(aprobarGeneracionHtml)
+
+##################################################
 # 6. Xml
 ##################################################
-"""
-lineasPokemons = leeTxtLineas(misPokemonsTxt)
-pokemonsXml = "pokemons.xml"
-statsTotales={}
+
 def generarXml():
+    lineasPokemons = leeTxtLineas(misPokemonsTxt)
+    pokemonsXml = "pokemons.xml"
     pokemonsHuyeron = []  #Lista nueva para guardar solo los que huyeron
-    for linea in lineasPokemons:
-        linea = linea.strip()
-        if not linea:
-            continue
-        partes = linea.split('^')
-        if len(partes) != 3:
-            continue
-        idStr, nombre, estado = partes
-        if estado == 'h':  #Solo los que huyeron
-            try:
-                idPokemon = int(idStr)
-                totalEstadisticas = statsTotales.get(idPokemon, 0)
-                pokemonsHuyeron.append((idPokemon, nombre, totalEstadisticas))
-            except ValueError:
-                pass  #Ignorar si no es número
-    lineasXml = ['<Pokemons>']
-    for idP, nombre, total in pokemonsHuyeron:
-        lineasXml.append(f'  <Pokemon id="{idP}">')
-        lineasXml.append(f'    <nombre>{nombre}</nombre>')
-        lineasXml.append(f'    <totalEstad>{total}</totalEstad>')
-        lineasXml.append(f'  </Pokemon>')
-    lineasXml.append('</Pokemons>')
-    with open(pokemonsXml, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(lineasXml))
-    print(f"Archivo XML generado: {pokemonsXml}")
-"""
+    def aprobacionXml():
+        for linea in lineasPokemons:
+            linea = linea.strip()
+            if not linea:
+                continue
+            partes = linea.split('^')
+            if len(partes) != 3:
+                continue
+            idStr, nombre, estado = partes
+            if estado == 'h':  #Solo los que huyeron
+                try:
+                    idPokemon = int(idStr)
+                    totalEstadisticas = obtenerEstadisticas(nombre)
+                    pokemonsHuyeron.append((idPokemon, nombre, totalEstadisticas))
+                except ValueError:
+                    pass  #Ignorar si no es número
+        lineasXml = ['<Pokemons>']
+        for idP, nombre, total in pokemonsHuyeron:
+            lineasXml.append(f'  <Pokemon id="{idP}">')
+            lineasXml.append(f'    <nombre>{nombre}</nombre>')
+            lineasXml.append(f'    <totalEstad>{total}</totalEstad>')
+            lineasXml.append(f'  </Pokemon>')
+        lineasXml.append('</Pokemons>')
+        with open(pokemonsXml, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(lineasXml))
+        print(f"Archivo XML generado: {pokemonsXml}")
+        mensaje = "Se ha creado el XML de pokemons huidos."
+        ventanaConfirmacion(mensaje)
+    ventanaAprobacion(aprobacionXml)
+    
 ##################################################
 # 5. Descarga
 ##################################################
-
-def obtenerCsv(matrizPokemons):
-    try:
-        f=open(excelPokemons,"w")
-        escritor = csv.writer(f, delimiter=",") #; si el asistente lo quiere ver en diferentes casillas
-        escritor.writerows(matrizPokemons)
-        f.close()
-    except Exception as e:
-        print(f"Error al crear el archivo: {e}")
 
 def crearMatrizPokemons():
     pokemons = leeTxt(misPokemonsTxt)
@@ -459,9 +436,9 @@ def crearMatrizPokemons():
 ##################################################
 
 def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
-    popup = tk.Toplevel()
-    popup.geometry("300x380") 
-    popup.title(f"{nombre.capitalize()} - Detalles")
+    ventana = tk.Toplevel()
+    ventana.geometry("300x380") 
+    ventana.title(f"{nombre.capitalize()} - Detalles")
     url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{clave}.png"
     if shiny:
         url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{clave}.png"
@@ -470,26 +447,26 @@ def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
             rawData = u.read()
         imagen = Image.open(BytesIO(rawData)).resize((96, 96))
         foto = ImageTk.PhotoImage(imagen)
-        labelImg = tk.Label(popup, image=foto)
+        labelImg = tk.Label(ventana, image=foto)
         labelImg.image = foto
         labelImg.pack()
     except:
-        tk.Label(popup, text="(No se pudo cargar la imagen)").pack()
-    tk.Label(popup, text=f"Nombre: {nombre}").pack()
-    tk.Label(popup, text=f"Peso: {peso}").pack()
-    tk.Label(popup, text=f"Altura: {altura}").pack()
+        tk.Label(ventana, text="(No se pudo cargar la imagen)").pack()
+    tk.Label(ventana, text=f"Nombre: {nombre}").pack()
+    tk.Label(ventana, text=f"Peso: {peso}").pack()
+    tk.Label(ventana, text=f"Altura: {altura}").pack()
     if tipos:
         tiposStr = ", ".join(tipos)
-        tk.Label(popup, text=f"Tipos: {tiposStr}").pack()
+        tk.Label(ventana, text=f"Tipos: {tiposStr}").pack()
     nombresStats = ["HP", "Ataque", "Defensa", "Ataque Esp", "Defensa Esp", "Velocidad"]
     for i in range(len(stats)):
-        tk.Label(popup, text=f"{nombresStats[i]}: {stats[i]}").pack()
-    tk.Button(popup, text="Cerrar", command=popup.destroy).pack(pady=10)
+        tk.Label(ventana, text=f"{nombresStats[i]}: {stats[i]}").pack()
+    tk.Button(ventana, text="Cerrar", command=ventana.destroy).pack(pady=10)
 
 ##################################################
-# Pokédex Reto 3
+# 3. Pokédex
 ##################################################
-      
+
 def mostrarPagina(ventana, frame, pokemons, pagina):
     for widget in frame.winfo_children():
         widget.destroy()
@@ -544,6 +521,7 @@ def retroceder(ventana, frame, pokemons, paginaActualVar):
         mostrarPagina(ventana, frame, pokemons, paginaActualVar.get())
 
 def ventanaPokedex():
+    pokemonsLista = lee(misPokemonsAtrapadosPkl)
     ventana = tk.Toplevel()
     ventana.title("Pokédex")
     frame = tk.Frame(ventana)
@@ -551,7 +529,6 @@ def ventanaPokedex():
     paginaActualVar = tk.IntVar(value=0)
     controles = tk.Frame(ventana)
     controles.pack()
-    pokemonsLista = lee(misPokemonsAtrapadosPkl)
     tk.Button(controles, text="<<", command=lambda: retroceder(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.LEFT, padx=10)
     tk.Button(controles, text=">>", command=lambda: avanzar(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.RIGHT, padx=10)
     mostrarPagina(ventana, frame, pokemonsLista, paginaActualVar.get())
@@ -560,129 +537,7 @@ def ventanaPokedex():
 # 2. Atrapar
 ##################################################
 
-puntosSalud = "hp"
-ataque = "attack"
-ataqueEspecial = "special-attack"
-defensa = "defense"
-defensaEspecial = "special-defense"
-velocidad = "speed"
-    
-def validarShiny(info):
-    shiny = info['sprites']['front_shiny']
-    print(shiny) #Borrar luego, esto es para verificar link shiny ----------------
-    if shiny is None:
-        return False
-    else:
-        return True
-
-def obtenerPeso(peso):
-    try:
-        return int(peso) * 10
-    except ValueError:
-        return 0
-    
-def obtenerAltura(altura):
-    try:
-        return int(altura) * 10
-    except ValueError:
-        return 0
-    
-def obtenerTotalEstadistica(info):
-    salud = obtenerEstadisticaPuntoSalud(info)
-    ataque = obtenerEstadisticaAtaque(info)
-    defensa = obtenerEstadisticaDefensa(info)
-    ataqueEspecial = obtenerEstadisticaAtaqueEspecial(info)
-    defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
-    velocidad = obtenerEstadisticaVelocidad(info)
-    return salud + ataque + defensa + ataqueEspecial + defensaEspecial + velocidad
-
-def obtenerEstadistica(info, tipo):
-    estadisticas = info['stats']
-    for estadistica in estadisticas:
-        if estadistica['stat']['name'] == tipo:
-            return estadistica['base_stat']
-    return 0
-
-def obtenerEstadisticaPuntoSalud(info):
-    return obtenerEstadistica(info, puntosSalud)
-
-def obtenerEstadisticaAtaque(info):
-    return obtenerEstadistica(info, ataque)
-
-def obtenerEstadisticaDefensa(info):
-    return obtenerEstadistica(info, defensa)
-
-def obtenerEstadisticaAtaqueEspecial(info):
-    return obtenerEstadistica(info, ataqueEspecial)
-
-def obtenerEstadisticaDefensaEspecial(info):
-    return obtenerEstadistica(info, defensaEspecial)
-
-def obtenerEstadisticaVelocidad(info):
-    return obtenerEstadistica(info, velocidad)
-
-def obtenerTipo(info, indice):
-    try:
-        return info['types'][indice]['type']['name']
-    except IndexError:
-        return "" # Mostrar un String vacio cuando no encuentra el indice
-    
-def obtenerImagen(info):
-    shiny = validarShiny(info)
-    if shiny == True:
-        return info['sprites']['front_shiny']
-    else:
-        return info['sprites']['front_default']
-
-def obtenerPokemonsAtrapados(listaRandomAtrapados):
-    # Crear el diccionario
-    diccionarioPokemons = {}
-    for pokemon in listaRandomAtrapados:
-        id = pokemon.split("^")[0] # Obtener el id del Pokemon
-        respuesta = requests.get(f"https://pokeapi.co/api/v2/pokemon/{id}")
-        if respuesta.ok:
-            info = respuesta.json()
-            salud = obtenerEstadisticaPuntoSalud(info)
-            ataque = obtenerEstadisticaAtaque(info)
-            defensa = obtenerEstadisticaDefensa(info)
-            ataqueEspecial = obtenerEstadisticaAtaqueEspecial(info)
-            defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
-            velocidad = obtenerEstadisticaVelocidad(info)
-            totalStats = obtenerTotalEstadistica(info)
-            info = respuesta.json()
-            # Asignar el valor al pokemon
-            diccionarioPokemons[int(id)] = [info['name'], # nombre
-                                             (validarShiny(info), obtenerPeso(info['weight']), obtenerAltura(info['height'])), # (esShiny, peso, altura)
-                                             [totalStats, (salud, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad)], # [totalEstad, (PS, A, D, AE, DE, V)]
-                                             (obtenerTipo(info, 0), obtenerTipo(info, 1)), # (listaDeTipos, listaDeTipos)
-                                              obtenerImagen(info) # url
-                                            ]
-        else:
-            print("Error", respuesta.status_code)
-    # Guardar el archivo
-    graba(misPokemonsAtrapadosPkl, diccionarioPokemons) # Lo guardamos en memoria secundaria con el fin de hacerlo más eficiente.
-    pokemonsAtrapados = lee(misPokemonsAtrapadosPkl) # Borrar luego -----------------
-    print(pokemonsAtrapados) # Borrar luego -----------------
-
-def obtenerIdAtrapados(listaRandomAtrapados):
-    listaIdAtrapados = []
-    for pokemon in listaRandomAtrapados:
-        infoPokemon = pokemon.split("^")
-        listaIdAtrapados.append(infoPokemon[0])
-    print(listaIdAtrapados) # Borrar luego -----------------
-    graba(misIdAtrapados, listaIdAtrapados)
-
-def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
-    misPokemons = ""
-    for pokemon in listaPokemons:
-        if pokemon in listaRandomAtrapados:
-            misPokemons += f"{pokemon.strip("^a").strip("^h")}^a\n" # Usar strip para evitar valores viejos
-        else:
-            misPokemons += f"{pokemon.strip("^a").strip("^h")}^h\n" # Usar strip para evitar valores viejos
-    # Guardar los cambios en el archivo "Mis Pokemons"
-    grabaTxt(misPokemonsTxt, misPokemons)
-
-def atraparPokemons(porcentaje):
+def atraparPokemons(porcentaje): #Se queda
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
     print(listaPokemons) # Luego borrarlo ----------------
@@ -696,17 +551,8 @@ def atraparPokemons(porcentaje):
     obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     mensaje = "Pokemons atrapados exitosamente."
     ventanaConfirmacion(mensaje)
-    
-def validarPorcentaje(porcentaje):
-    try:
-        if int(porcentaje) < 0 or int(porcentaje) > 100:
-            return (False, "El porcentaje debe de ser entre 0 y 100.")
-        else:
-            return (True, "")
-    except ValueError:
-        return (False, "El valor tiene que ser un número entero.")
 
-def calcularPorcentaje(porcentaje):
+def calcularPorcentaje(porcentaje): #Se queda
     porcentajeValido = validarPorcentaje(porcentaje)
     if porcentajeValido[0] == True:
         return atraparPokemons(porcentaje)
@@ -739,13 +585,6 @@ def ventanaAtrapar():
 ##################################################
 # 1. Buscar
 ##################################################
-
-def obtenerLimitePokemon():
-    url = "https://pokeapi.co/api/v2/pokemon"
-    respuesta = requests.get(url)
-    if respuesta.status_code == 200:
-        datos = respuesta.json()
-        return datos["count"]
 
 def buscarPokemon(cantidad):
     urlPokemon = "https://pokeapi.co/api/v2/pokemon"
@@ -814,7 +653,6 @@ def validarBotones():
                 diccGlobal["botones"][f"boton{i}"].config(state="active")
 
 def main():
-    #global root
     root = tk.Tk()
     root.geometry("500x300")
     root.title("Ventana Principal")
@@ -834,9 +672,9 @@ def main():
     diccGlobal["botones"]["boton4"].grid(row=4, column=0)
     diccGlobal["botones"]["boton5"] = tk.Button(frame, text="5. Descarga", width=20, command=crearMatrizPokemons)
     diccGlobal["botones"]["boton5"].grid(row=5, column=0)
-    diccGlobal["botones"]["boton6"] = tk.Button(frame, text="6. XML", width=20)#, command=generarXml)
+    diccGlobal["botones"]["boton6"] = tk.Button(frame, text="6. XML", width=20, command=generarXml)
     diccGlobal["botones"]["boton6"].grid(row=6, column=0)
-    diccGlobal["botones"]["boton7"] = tk.Button(frame, text="7. HTML Desc", width=20)
+    diccGlobal["botones"]["boton7"] = tk.Button(frame, text="7. HTML Desc", width=20, command=generarHtmlDesdeXml)
     diccGlobal["botones"]["boton7"].grid(row=7, column=0)
     diccGlobal["botones"]["boton8"] = tk.Button(frame, text="8. esShiny", width=20, command=crarArchivoShiny)
     diccGlobal["botones"]["boton8"].grid(row=1, column=1)

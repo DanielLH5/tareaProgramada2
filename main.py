@@ -6,7 +6,11 @@ import requests
 import random 
 import csv
 import re
-from archivos import * 
+from tkinter import PhotoImage
+import urllib.request
+from io import BytesIO
+from PIL import Image, ImageTk
+from funciones import * 
 
 ##################################################
 # Ventanas Secundarias
@@ -78,9 +82,9 @@ def agregarPokemonIDTxt(id, nombre):
         listaPokemons = txtPokemons.split("\n")[:-1]
         for pokemon in listaPokemons:
             if re.fullmatch(f"^{id}\\^[a-z\\-]+\\^[a-z]$", pokemon):
-                txtPokemonsActualizado += nuevoPokemon + "\n"
+                txtPokemonsActualizado += f"{nuevoPokemon}\n"
             else:
-                txtPokemonsActualizado += pokemon + "\n"
+                txtPokemonsActualizado += f"{pokemon}\n"
         print(txtPokemonsActualizado)
             
 def atraparPokemonID(id, pokemonsA):
@@ -103,8 +107,8 @@ def atraparPokemonID(id, pokemonsA):
                                           obtenerImagen(info) # url
                                         ]
         graba(misPokemonsAtrapadosPkl, pokemonsA)
-        diccionarioActualizado = lee(misPokemonsAtrapadosPkl)
-        #print(diccionarioActualizado) # Borrar luego -----------------
+        diccionarioActualizado = lee(misPokemonsAtrapadosPkl) # Borrar luego -----------------
+        print(diccionarioActualizado) # Borrar luego -----------------
         nombre = info['name']
         agregarPokemonIDTxt(id, nombre)
         mensaje = f"Se ha guardado el pokemon {id} en el diccionario."
@@ -119,7 +123,7 @@ def obtenerIDBuscados(txtPokemons):
     for pokemon in listaPokemons:
         infoPokemon = pokemon.split("^")
         listaID.append(infoPokemon[0])
-    print(listaID)
+    #print(listaID) # Borrar luego -----------------
     return listaID
 
 def validarAtraparPokemon(id):
@@ -328,6 +332,27 @@ def crarArchivoShiny():
 <head>
     <title>esShiny</title>
     <meta charset="uft-8">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: lightgray;
+        }
+        img {
+            width: 80px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <table>
@@ -464,13 +489,6 @@ def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
 ##################################################
 # Pokédex Reto 3
 ##################################################
-
-from tkinter import PhotoImage
-import urllib.request
-from io import BytesIO
-from PIL import Image, ImageTk
-       
-pokemonsLista = lee(misPokemonsAtrapadosPkl)
       
 def mostrarPagina(ventana, frame, pokemons, pagina):
     for widget in frame.winfo_children():
@@ -533,6 +551,7 @@ def ventanaPokedex():
     paginaActualVar = tk.IntVar(value=0)
     controles = tk.Frame(ventana)
     controles.pack()
+    pokemonsLista = lee(misPokemonsAtrapadosPkl)
     tk.Button(controles, text="<<", command=lambda: retroceder(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.LEFT, padx=10)
     tk.Button(controles, text=">>", command=lambda: avanzar(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.RIGHT, padx=10)
     mostrarPagina(ventana, frame, pokemonsLista, paginaActualVar.get())

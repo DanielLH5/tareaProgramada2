@@ -1,3 +1,10 @@
+###########################################################
+#Elaborado por: Daniel Liao Huang y Ethan Hernández Cubillo
+#Fecha de Realización: 16/05/2025
+#Última actualización: 04/06/2025
+#Versión: 3.13.3
+###########################################################
+
 import requests
 import pickle
 import csv

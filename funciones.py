@@ -189,15 +189,15 @@ def obtenerEstadisticas(nombrePokemon):
     "alomomol": "alomomola","galvantul": "galvantula","larvest": "larvesta","volcaron": "volcarona","meloetta-ari": "meloetta",
     "greninj": "greninja","spewp": "spewpa","amaur": "amaura"} #Diccionario con nombres corregidos, para que se encuentren en el API.
     nombreCorregido = nombresCorregidos.get(nombrePokemon.lower(), nombrePokemon.lower())
-    url = f"https://pokeapi.co/api/v2/pokemon/{nombreCorregido}"
+    url = f"https://pokeapi.co/api/v2/pokemon/{nombreCorregido}" #Busca en la API el pokémon con el nombre correcto
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
+        respuesta = requests.get(url)
+        if respuesta.status_code == 200: #Saca los datos de ese pokémon
+            datos = respuesta.json()
             total = 0
-            for stat in data['stats']:
-                total += stat['base_stat']
-            return total
+            for estadistica in datos['stats']:
+                total += estadistica['base_stat']
+            return total #Retorna el total de estadisticas del pokémon específico
         else:
             print(f"No se encontró el Pokémon: {nombrePokemon}")
             return 0

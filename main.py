@@ -316,8 +316,7 @@ def crarArchivoShiny():
 
 ##################################################
 # 7. HTML escapados.
-##################################################leeTxtLineas
-
+##################################################
 def generarHtmlDesdeXml():
     archivoXml = "pokemons.xml"
     with open(archivoXml, 'r', encoding='utf-8') as f:
@@ -326,28 +325,32 @@ def generarHtmlDesdeXml():
         baseNombreHtml = "huyeron"
         porPagina = 100
         pokemons = []
-        idP = None
-        nombre = None
-        total = None
+        idPokemon = total = int
+        nombre = str
         for linea in lineas:
             linea = linea.strip()
-            if linea.startswith('<Pokemon') and 'id="' in linea:
-                try:
-                    idP = int(linea.split('id="')[1].split('"')[0])
-                except (IndexError, ValueError):
-                    continue
+            if linea.startswith('<Pokemon'):
+                if 'id="' in linea:
+                    try:
+                        idPokemon = int(linea.split('id="')[1].split('"')[0])
+                    except (IndexError, ValueError):
+                        continue
             elif linea.startswith('<nombre>'):
                 nombre = linea.replace('<nombre>', '').replace('</nombre>', '').strip()
             elif linea.startswith('<totalEstad>'):
                 try:
                     total = int(linea.replace('<totalEstad>', '').replace('</totalEstad>', '').strip())
-                    if idP is not None and nombre is not None:
-                        pokemons.append((idP, nombre, total))
+                    if idPokemon != int:
+                        if nombre != str:
+                            pokemons.append((idPokemon, nombre, total))
                 except ValueError:
                     continue
         pokemons.sort(key=lambda x: x[2], reverse=True)
         totalPokemons = len(pokemons)
-        paginas = (totalPokemons // porPagina) + (1 if totalPokemons % porPagina != 0 else 0)
+        if totalPokemons % porPagina != 0: #Cuenta la cantidad de paginas que se deben crear según cantidad de pokémons.
+            paginas = (totalPokemons // porPagina) + 1
+        else:
+            paginas = (totalPokemons // porPagina) + 0
         contador = 1
         for pagina in range(paginas):
             nombreArchivo = f"{baseNombreHtml}{pagina + 1}.html"
@@ -361,8 +364,8 @@ def generarHtmlDesdeXml():
                 inicio = pagina * porPagina
                 fin = min(inicio + porPagina, totalPokemons)
                 for i in range(inicio, fin):
-                    idP, nombre, total = pokemons[i]
-                    archivo.write(f"<tr><td>{contador}</td><td>{idP}</td><td>{nombre}</td><td>{total}</td></tr>\n")
+                    idPokemon, nombre, total = pokemons[i]
+                    archivo.write(f"<tr><td>{contador}</td><td>{idPokemon}</td><td>{nombre}</td><td>{total}</td></tr>\n")
                     contador += 1
                 archivo.write("</table>\n</body>\n</html>")
         print(f"Archivo HTML generado: {nombreArchivo}")
@@ -377,14 +380,14 @@ def generarHtmlDesdeXml():
 def generarXml():
     lineasPokemons = leeTxtLineas(misPokemonsTxt)
     pokemonsXml = "pokemons.xml"
-    pokemonsHuyeron = []  #Lista nueva para guardar solo los que huyeron
+    pokemonsHuyeron = [] #Lista nueva para guardar solo los que huyeron
     def aprobacionXml():
         for linea in lineasPokemons:
             linea = linea.strip()
-            if not linea:
+            if not linea: #En caso de haber línea vacía
                 continue
-            partes = linea.split('^')
-            if len(partes) != 3:
+            partes = linea.split('^') #Divide la información de los separadores
+            if len(partes) != 3: #En caso de ser una linea con valores distintos
                 continue
             idStr, nombre, estado = partes
             if estado == 'h':  #Solo los que huyeron
@@ -393,10 +396,10 @@ def generarXml():
                     totalEstadisticas = obtenerEstadisticas(nombre)
                     pokemonsHuyeron.append((idPokemon, nombre, totalEstadisticas))
                 except ValueError:
-                    pass  #Ignorar si no es número
-        lineasXml = ['<Pokemons>']
-        for idP, nombre, total in pokemonsHuyeron:
-            lineasXml.append(f'  <Pokemon id="{idP}">')
+                    pass #Ignora si no es número
+        lineasXml = ['<Pokemons>'] #Escritura del XML
+        for idPokemon, nombre, total in pokemonsHuyeron:
+            lineasXml.append(f'  <Pokemon id="{idPokemon}">')
             lineasXml.append(f'    <nombre>{nombre}</nombre>')
             lineasXml.append(f'    <totalEstad>{total}</totalEstad>')
             lineasXml.append(f'  </Pokemon>')
@@ -444,12 +447,12 @@ def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
         url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{clave}.png"
     try:
         with urllib.request.urlopen(url) as u:
-            rawData = u.read()
-        imagen = Image.open(BytesIO(rawData)).resize((96, 96))
+            imagenPokemon = u.read()
+        imagen = Image.open(BytesIO(imagenPokemon)).resize((96, 96))
         foto = ImageTk.PhotoImage(imagen)
-        labelImg = tk.Label(ventana, image=foto)
-        labelImg.image = foto
-        labelImg.pack()
+        labelImagen = tk.Label(ventana, image=foto)
+        labelImagen.image = foto
+        labelImagen.pack()
     except:
         tk.Label(ventana, text="(No se pudo cargar la imagen)").pack()
     tk.Label(ventana, text=f"Nombre: {nombre}").pack()
@@ -480,15 +483,15 @@ def mostrarPagina(ventana, frame, pokemons, pagina):
         shiny = pokemons[clave][1][0]
         peso = pokemons[clave][1][1]
         altura = pokemons[clave][1][2]
-        stats = pokemons[clave][2][1]  # lista de 6 stats
-        tipos = pokemons[clave][3]     # tupla con tipos
+        estadisticas = pokemons[clave][2][1] #Lista de 6 estadisticas
+        tipos = pokemons[clave][3] #Tupla con tipos
         url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{clave}.png"
         if shiny:
             url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{clave}.png"
         try:
             with urllib.request.urlopen(url) as u:
-                rawData = u.read()
-            imagen = Image.open(BytesIO(rawData)).resize((64, 64))
+                imagenPokemon = u.read()
+            imagen = Image.open(BytesIO(imagenPokemon)).resize((64, 64))
             foto = ImageTk.PhotoImage(imagen)
         except:
             foto = None
@@ -496,13 +499,12 @@ def mostrarPagina(ventana, frame, pokemons, pagina):
         framePoke.grid(row=fila, column=columna, padx=10, pady=10)
         if foto:
             labelImagen = tk.Label(framePoke, image=foto)
-            labelImagen.image = foto  #Mantener referencia
+            labelImagen.image = foto #Mantener referencia
             labelImagen.pack()
             labelImagen.bind(
                 "<Button-1>",
-                lambda e, c=clave, n=nombre, s=shiny, p=peso, a=altura, t=tipos, st=stats:
-                mostrarDetalles(c, n, s, p, a, t, st)
-            )
+                lambda e, c=clave, n=nombre, s=shiny, p=peso, a=altura, t=tipos, est=estadisticas: 
+                mostrarDetalles(c, n, s, p, a, t, est)) #Se actualizan los valores y se envían para mostrar
         tk.Label(framePoke, text=nombre).pack()
         columna += 1
         if columna == 5:

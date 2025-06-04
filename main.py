@@ -588,21 +588,21 @@ def crearMatrizPokemons():
 # 4. Detalle
 ##################################################
 
-def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, estadisticas):
+def mostrarDetalles(id, nombre, shiny, peso, altura, tipos, estadisticas):
     """
     Funcionamiento:
     Muestra los detalles, el nombre y la imagen del pokémon seleccionado en la pokédex.
     Entradas:
-    - clave, nombre, shiny, peso, altura, tipos, estadisticas
+    - id, nombre, shiny, peso, altura, tipos, estadisticas
     Salidas:
     - Abre una ventana que muestra todos los detalles del pokémon seleccionado.
     """
     ventana = tk.Toplevel()
     ventana.geometry("300x380") 
     ventana.title(f"{nombre.capitalize()} - Detalles")
-    url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{clave}.png"
+    url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
     if shiny:
-        url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{clave}.png"
+        url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{id}.png"
     try:
         with urllib.request.urlopen(url) as u:
             imagenPokemon = u.read()
@@ -638,21 +638,21 @@ def mostrarPagina(ventana, pagina, pokemons, paginaActual):
     """
     for widget in pagina.winfo_children():
         widget.destroy()
-    claves = sorted(pokemons.keys())
+    ids = sorted(pokemons.keys())
     inicio = paginaActual * 25
     fin = inicio + 25
-    subset = claves[inicio:fin]
+    subset = ids[inicio:fin]
     fila, columna = 0, 0
-    for clave in subset:
-        nombre = pokemons[clave][0]
-        shiny = pokemons[clave][1][0]
-        peso = pokemons[clave][1][1]
-        altura = pokemons[clave][1][2]
-        estadisticas = pokemons[clave][2][1] #Lista de 6 estadisticas
-        tipos = pokemons[clave][3] #Tupla con tipos
-        url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{clave}.png"
+    for id in subset:
+        nombre = pokemons[id][0]
+        shiny = pokemons[id][1][0]
+        peso = pokemons[id][1][1]
+        altura = pokemons[id][1][2]
+        estadisticas = pokemons[id][2][1] #Lista de 6 estadisticas
+        tipos = pokemons[id][3] #Tupla con tipos
+        url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
         if shiny:
-            url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{clave}.png"
+            url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{id}.png"
         try:
             with urllib.request.urlopen(url) as u:
                 imagenPokemon = u.read()
@@ -668,8 +668,8 @@ def mostrarPagina(ventana, pagina, pokemons, paginaActual):
             labelImagen.pack()
             labelImagen.bind(
                 "<Button-1>",
-                lambda e, c=clave, n=nombre, s=shiny, p=peso, a=altura, t=tipos, est=estadisticas: 
-                mostrarDetalles(c, n, s, p, a, t, est)) #Se actualizan los valores y se envían para mostrar
+                lambda e, i=id, n=nombre, s=shiny, p=peso, a=altura, t=tipos, est=estadisticas: 
+                mostrarDetalles(i, n, s, p, a, t, est)) #Se actualizan los valores y se envían para mostrar
         tk.Label(paginaPokedex, text=nombre).pack()
         columna += 1
         if columna == 5:

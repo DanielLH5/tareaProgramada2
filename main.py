@@ -21,6 +21,14 @@ from funciones import *
 # Ventanas Secundarias
 ##################################################
 def ventanaRetroalimentacion(mensaje):
+    """
+    Funcionamiento: 
+    Muestra una ventana con un mensaje de retroalimentación al usuario.
+    Entradas: 
+    - El mesnaje(str) de retroalimentación.
+    Salidas: 
+    - Se muestra la ventana de retroalimentación.
+    """
     root = tk.Toplevel()
     root.geometry("300x100")
     root.title("Retroalimentación")
@@ -30,6 +38,14 @@ def ventanaRetroalimentacion(mensaje):
     boton.pack(pady=10)
 
 def ventanaConfirmacion(mensaje):
+    """
+    Funcionamiento: 
+    Muestra una ventana con un mensaje de confirmación al usuario.
+    Entradas: 
+    - mensaje (str): El mensaje de confirmación.
+    Salidas: 
+    - Se muestra la ventana de confirmación.
+    """
     root = tk.Toplevel()
     root.geometry("300x100")
     root.title("Confirmación")
@@ -39,6 +55,15 @@ def ventanaConfirmacion(mensaje):
     boton.pack(pady=10)
     
 def ventanaAprobacion(comandoAceptar):
+    """
+    Funcionamiento: 
+    Muestra una ventana que solicita aprobación del usuario. Si el usuario acepta,
+    se ejecuta la función proporcionada y se cierra la ventana. Si rechaza, solo se cierra.
+    Entradas: 
+    - comandoAceptar: Función que se ejecutará si el usuario presiona "Aceptar".
+    Salidas: 
+    - Se muestra la ventana de aprobación. Puede ejecutar una acción si se acepta.
+    """
     root = tk.Toplevel()
     root.geometry("250x150")
     root.title("Aprobación")
@@ -54,6 +79,14 @@ def ventanaAprobacion(comandoAceptar):
 ##################################################
 
 def close():
+    """
+    Funcionamiento: 
+    Cierra la ventana principal de la aplicación deteniendo el ciclo principal de Tkinter.
+    Entradas: 
+    - NA
+    Salidas: 
+    - Se cierra la ventana principal (finaliza la ejecución de la interfaz gráfica).
+    """
     diccGlobal["root"].quit()
 
 ##################################################
@@ -61,6 +94,14 @@ def close():
 ##################################################
 
 def ventanaCreditos():
+    """
+    Funcionamiento: 
+    Muestra una ventana emergente con los créditos del proyecto, incluyendo los nombres de los autores.
+    Entradas: 
+    - NA
+    Salidas: 
+    - Se muestra la ventana con los créditos.
+    """
     from tkinter import font
     creditos = tk.Toplevel()
     creditos.title("Créditos")
@@ -73,6 +114,17 @@ def ventanaCreditos():
 # 12. Agregar Pokémon
 ##################################################        
 def atraparPokemonID(id, pokemonsA):
+    """
+    Funcionamiento: 
+    Obtiene información del Pokémon desde la API de PokeAPI según su ID, guarda sus datos en un diccionario,
+    serializa el diccionario en un archivo y muestra un mensaje de confirmación.
+    Entradas: 
+    - id (str): ID del Pokémon a atrapar.
+    - pokemonsA (dict): Diccionario actual de pokémons atrapados.
+    Salidas: 
+    - Se actualiza el diccionario con los datos del nuevo Pokémon atrapado y se guarda en disco.
+    - Se muestra una ventana de confirmación.
+    """
     urlID = f"https://pokeapi.co/api/v2/pokemon/{id}/"
     respuesta = requests.get(urlID) #200 si está ok, 400 si tiene un error, 500 si no se encuentra
     if respuesta.ok: 
@@ -103,6 +155,16 @@ def atraparPokemonID(id, pokemonsA):
     print(f"Se ha agregado el id: {id}.")
 
 def validarAtraparPokemon(id):
+    """
+    Funcionamiento:
+    Valida el ID ingresado para atrapar un Pokémon. Verifica que sea un número entero,
+    que no esté repetido y que esté dentro del límite permitido.
+    Entradas:
+    - id (str): ID ingresado por el usuario.
+    Salidas:
+    - Se muestra una ventana de retroalimentación si hay un error.
+    - Si el ID es válido, se ejecuta atraparPokemonID.
+    """
     limite = obtenerLimitePokemon()
     pokemonsA = lee(misPokemonsAtrapadosPkl)
     try:
@@ -122,6 +184,15 @@ def validarAtraparPokemon(id):
         return ventanaRetroalimentacion(mensaje)
 
 def ventanaAgregarPokemon():
+    """
+    Funcionamiento: 
+    Muestra una ventana para que el usuario ingrese un ID de Pokémon que desea agregar.
+    Al presionar el botón, se valida el ID y se intenta atrapar el Pokémon correspondiente.
+    Entradas: 
+    - NA
+    Salidas: 
+    - Se muestra una ventana con un espacio de entrada y un botón para agregar el Pokémon.
+    """
     agregar = tk.Toplevel()
     agregar.title("Agregar Pokémon")
     agregar.geometry("500x200")
@@ -140,8 +211,17 @@ def ventanaAgregarPokemon():
 ##################################################
 
 def actualizarStatsVirus(cambio, porcentaje):
+    """
+    Funcionamiento: 
+    Modifica las estadísticas de todos los Pokémon atrapados aplicando un aumento o disminución porcentual
+    según el valor ingresado.
+    Entradas: 
+    - cambio (int o str): 0 para aumentar, 1 para disminuir las estadísticas.
+    - porcentaje (str): Porcentaje a aplicar sobre las estadísticas.
+    Salidas: 
+    - Se muestra una ventana de aprobación. Si se aprueba, se guarda el nuevo diccionario modificado.
+    """
     pokemonBD = lee(misPokemonsAtrapadosPkl)
-    #print(cambio, porcentaje)
     diccPokemonVirus = {}
     for clave, info in pokemonBD.items():
         infoPokemon = []
@@ -161,6 +241,16 @@ def actualizarStatsVirus(cambio, porcentaje):
     ventanaAprobacion(guardarDicc)
 
 def verificarPorcentajeVirus(cambio, porcentaje):
+    """
+    Funcionamiento: 
+    Valida si el porcentaje ingresado para aplicar el virus es correcto.
+    Entradas:
+    - cambio (int o str): 0 para aumentar, 1 para disminuir.
+    - porcentaje (str): Porcentaje a aplicar sobre las estadísticas.
+    Salidas:
+    - Si válido, llama a actualizarStatsVirus.
+    - Si no válido, muestra una ventana de retroalimentación.
+    """
     porcentajeValido = validarPorcentajeVirus(cambio, porcentaje)
     if porcentajeValido[0] == True:
         return actualizarStatsVirus(cambio, porcentaje)
@@ -169,6 +259,15 @@ def verificarPorcentajeVirus(cambio, porcentaje):
         return ventanaRetroalimentacion(mensaje)
 
 def ventanaVirus():
+    """
+    Funcionamiento:
+    Crea una ventana para aplicar un "Virus" a los Pokémon atrapados, permitiendo al usuario
+    seleccionar si desea aumentar o disminuir las estadísticas, e ingresar un porcentaje.
+    Entradas:
+    - NA
+    Salidas:
+    - Se muestra una ventana donde el usuario puede aplicar un cambio porcentual a las estadísticas.
+    """
     virus = tk.Toplevel()
     virus.title("Virus")
     virus.geometry("250x180")
@@ -189,6 +288,16 @@ def ventanaVirus():
 ##################################################
 
 def matrizADicc():
+    """
+    Funcionamiento:
+    Convierte una matriz de Pokémon en un diccionario y lo guarda en memoria secundaria.
+    Muestra una ventana de aprobación antes de guardar.
+    Entradas:
+    - NA
+    Salidas:
+    - Guarda el diccionario convertido en el archivo definido en diccPokemonAM.
+    - Muestra ventana de confirmación tras guardar.
+    """
     matrizPokemon = lee(matrizPokemonAD)
     diccPokemon = {}
     for pokemon in matrizPokemon:
@@ -219,6 +328,16 @@ def matrizADicc():
 ##################################################
 
 def diccAMatriz():
+    """
+    Funcionamiento:
+    Convierte un diccionario de Pokémon en una matriz y la guarda en memoria secundaria.
+    Muestra una ventana de aprobación antes de guardar.
+    Entradas:
+    - NA
+    Salidas:
+    - Guarda la matriz convertida en el archivo definido en matrizPokemonAD.
+    - Muestra ventana de confirmación tras guardar.
+    """
     diccPokemon = lee(misPokemonsAtrapadosPkl)
     matrizPokemons = []
     for clave, valor in diccPokemon.items():
@@ -249,6 +368,15 @@ def diccAMatriz():
 ##################################################
 
 def crarArchivoShiny():
+    """
+    Funcionamiento:
+    Genera archivos HTML que muestran información de Pokémon shiny agrupados en bloques de hasta 100.
+    Entradas:
+    - NA
+    Salidas:
+    - Archivos HTML llamados "esShiny1.html", "esShiny2.html", etc.
+    - Ventana de confirmación que indica el éxito de la creación.
+    """
     infoAtrapados = lee(misPokemonsAtrapadosPkl)
     matrizId = obtenerIdShiny(infoAtrapados)
     def crearHTMLShiny():
@@ -416,6 +544,16 @@ def generarXml():
 ##################################################
 
 def crearMatrizPokemons():
+    """
+    Funcionamiento:
+    Convierte el estado ("a" o "h") a texto completo ("atrapado" o "huyó"),
+    crea una matriz con encabezados y los datos de cada pokémon y genera un archivo CSV.
+    Entradas:
+    - Lee desde el archivo misPokemonsTxt (archivo de texto con registros de Pokémon).
+    Salidas:
+    - Archivo CSV con la matriz de Pokémon creada.
+    - Ventana de confirmación tras la creación del archivo CSV.
+    """
     pokemons = leeTxt(misPokemonsTxt)
     listaPokemons = pokemons.split(f"\n")
     listaPokemons.pop() #Eliminamos el último "\n"
@@ -539,7 +677,16 @@ def ventanaPokedex():
 # 2. Atrapar
 ##################################################
 
-def atraparPokemons(porcentaje): #Se queda
+def atraparPokemons(porcentaje):
+    """
+    Funcionamiento:
+    Selecciona aleatoriamente un porcentaje dado de Pokémon de la lista completa y los marca como atrapados.
+    Luego actualiza archivos con los Pokémon atrapados.
+    Entradas:
+    - porcentaje (str): Porcentaje de Pokémon a atrapar (debe ser entre 0 y 100).
+    Salidas:
+    - Actualiza archivos internos y muestra un mensaje de confirmación.
+    """
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
     print(listaPokemons) # Luego borrarlo ----------------
@@ -556,7 +703,15 @@ def atraparPokemons(porcentaje): #Se queda
     mensaje = "Pokemons atrapados exitosamente."
     ventanaConfirmacion(mensaje)
 
-def calcularPorcentaje(porcentaje): #Se queda
+def calcularPorcentaje(porcentaje):
+    """
+    Funcionamiento:
+    Valida el porcentaje ingresado para atrapar Pokémon.
+    Entradas:
+    - porcentaje (str): Porcentaje a validar y usar para atrapar Pokémon.
+    Salidas:
+    - Ejecuta la siguiente función o muestra ventanas de retroalimentación.
+    """
     porcentajeValido = validarPorcentaje(porcentaje)
     if porcentajeValido[0] == True:
         return atraparPokemons(porcentaje)
@@ -565,9 +720,26 @@ def calcularPorcentaje(porcentaje): #Se queda
         return ventanaRetroalimentacion(mensaje)
 
 def limpiarEntradaPorcentaje():
+    """
+    Funcionamiento:
+    Limpia el valor del campo de entrada de porcentaje en la interfaz gráfica.
+    Entradas:
+    - NA
+    Salidas:
+    - Modifica la variable que controla la entrada.
+    """
     diccGlobal["porcentaje"].set("")
 
 def ventanaAtrapar():
+    """
+    Funcionamiento:
+    Crea una ventana para que el usuario ingrese un porcentaje y
+    pueda atrapar Pokémon según ese porcentaje, con botones para atrapar y limpiar.
+    Entradas:
+    - NA
+    Salidas:
+    - Muestra una ventana con interfaz gráfica.
+    """
     ventana = tk.Toplevel()
     ventana.title("Atrapar Pokémons")
     ventana.geometry("500x200")
@@ -591,6 +763,16 @@ def ventanaAtrapar():
 ##################################################
 
 def buscarPokemon(cantidad):
+    """
+    Funcionamiento:
+    Obtiene una lista de Pokémon desde la API.
+    Guarda en un archivo de texto los Pokémon obtenidos en formato "id^nombre".
+    Entradas:
+    - cantidad (int): Número de Pokémon a buscar.
+    Salidas:
+    - Guarda un archivo .txt con la lista de Pokémon.
+    - Muestra mensajes de confirmación o error.
+    """
     urlPokemon = "https://pokeapi.co/api/v2/pokemon"
     diccGlobal["numero"].set("")
     url = "https://pokeapi.co/api/v2/pokemon"
@@ -613,12 +795,21 @@ def buscarPokemon(cantidad):
         mensaje = "Se ha creado la Base de Datos de pokémons"
         ventanaConfirmacion(mensaje)
         validarBotones() #verifico si está el .txt para habilitar los otros botones
-        #print(listaPokemones) #Para verificar la información a u guardar.
     else:
         print(f"Error: {response.status_code}")
     print(f"Se ha creado los {cantidad} pokémons")
 
 def validarEntradaBuscar(numero):
+    """
+    Funcionamiento:
+    Valida la entrada del usuario para la búsqueda de Pokémon, asegurando que sea un número entero
+    mayor a 0 y menor o igual al límite máximo en la API.
+    Entradas:
+    - numero (str): Número de pokemons que se van a buscar en el API.
+    Salidas:
+    - Llama a buscarPokemon si la validación es correcta.
+    - Muestra mensajes de error si la validación falla.
+    """
     try:
         if int(numero) < 1:
             mensaje = "El número tiene que ser mayor a 0."
@@ -633,6 +824,14 @@ def validarEntradaBuscar(numero):
         return ventanaRetroalimentacion(mensaje)
 
 def ventanaBuscar():
+    """
+    Funcionamiento:
+    Crea una ventana gráfica para que el usuario ingrese la cantidad de Pokémon a buscar.
+    Entradas:
+    - NA
+    Salidas:
+    - Muestra ventana de interfaz gráfica.
+    """
     search = tk.Toplevel()
     search.title("Búsqueda de Pokémons")
     search.geometry("500x200")
@@ -648,6 +847,15 @@ def ventanaBuscar():
 ##################################################
 
 def validarBotones():
+    """
+    Funcionamiento:
+    Habilita o deshabilita los botones del 2 al 12 dependiendo de si existe contenido
+    en el archivo de texto 'misPokemonsTxt'.
+    Entradas:
+    - NA
+    Salidas:
+    - Actualiza el estado ('active' o 'disabled') de los botones.
+    """
     if not leeTxt(misPokemonsTxt):
         for i in range(2, 13):  #Botones del 2 al 12
             diccGlobal["botones"][f"boton{i}"].config(state="disabled")
@@ -657,6 +865,14 @@ def validarBotones():
                 diccGlobal["botones"][f"boton{i}"].config(state="active")
 
 def main():
+    """
+    Funcionamiento:
+    Muestra la ventana principal del programa con los botones del menú.
+    Entradas:
+    - NA
+    Salidas:
+    - Inicia la interfaz gráfica principal y muestra los botones con sus respectivas funciones.
+    """
     root = tk.Tk()
     root.geometry("500x300")
     root.title("Ventana Principal")

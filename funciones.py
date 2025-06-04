@@ -2,13 +2,21 @@ import requests
 import pickle
 import csv
 import re
-from funciones import * 
 
 ##################################################
 # Funciones de lectura
 ##################################################
 
 def grabaTxt(archivoTxt,datos):
+    """
+    Funcionamiento:
+    Guarda los datos proporcionados en un archivo de texto, sobrescribiendo el contenido anterior.
+    Entradas:
+    - archivoTxt (str): Nombre del archivo de texto a escribir.
+    - datos (str): El texto que se escribirá en el archivo.
+    Salidas:
+    - NA
+    """
     try:
         f=open(archivoTxt,"w")
         f.write(datos)
@@ -18,10 +26,27 @@ def grabaTxt(archivoTxt,datos):
     return
 
 def leeTxtLineas(txt):
+    """
+    Funcionamiento:
+    Lee un archivo de texto y devuelve sus líneas como una lista.
+    Entradas:
+    - txt (str): Ruta o nombre del archivo a leer.
+    Salidas:
+    - list[str]: Lista con las líneas del archivo.
+    """
     with open(txt, 'r', encoding='utf-8') as f:
         return f.readlines()
 
 def agregarTxt(archivoTxt,datos):
+    """
+    Funcionamiento:
+    Agrega texto al final de un archivo de texto existente.
+    Entradas:
+    - archivoTxt (str): Nombre del archivo al que se agregará información.
+    - datos (str): Texto que se desea añadir.
+    Salidas:
+    - NA
+    """
     try:
         f=open(archivoTxt,"a")
         f.write(datos)
@@ -31,6 +56,15 @@ def agregarTxt(archivoTxt,datos):
     return
 
 def leeTxt(archivoTxt):
+    """
+    Funcionamiento:
+    Lee todo el contenido de un archivo de texto y lo devuelve como una cadena.
+    Entradas:
+    - archivoTxt (str): Nombre del archivo a leer.
+    Salidas:
+    - str: Contenido del archivo si se puede leer.
+    - False: Si ocurre un error durante la lectura.
+    """
     datos = []
     try:
         f=open(archivoTxt,"r")
@@ -42,9 +76,13 @@ def leeTxt(archivoTxt):
 
 def graba(archivo,datos):
     """
-    Funcionamiento: Escribe en el archivo en modo escritura binaria. 
-    Entradas: El archivo y los nuevos datos.
-    Salidas: Guarda los datos en memoria externa.
+    Funcionamiento:
+    Guarda datos en un archivo usando serialización binaria con pickle.
+    Entradas:
+    - archivo (str): Nombre del archivo donde se guardarán los datos.
+    - datos: Información que será guardado.
+    Salidas:
+    - NA
     """
     try:
         f=open(archivo,"wb")
@@ -56,9 +94,13 @@ def graba(archivo,datos):
 
 def lee(archivo):
     """
-    Funcionamiento: Lee el archivo en modo lectura binaria. 
-    Entradas: El archivo.
-    Salidas: Devuelve el elchivo.
+    Funcionamiento:
+    Lee un archivo con formato binario serializado (pickle) y devuelve su contenido.
+    Entradas:
+    - archivo (str): Nombre del archivo a leer.
+    Salidas:
+    - datos: Información leído desde el archivo.
+    - False: Si ocurre un error durante la lectura.
     """
     datos = []
     try:
@@ -70,6 +112,14 @@ def lee(archivo):
     return datos
 
 def obtenerCsv(matrizPokemons):
+    """
+    Funcionamiento:
+    Crea un archivo CSV y escribe una matriz de datos de Pokémon en él.
+    Entradas:
+    - matrizPokemons (matriz): Matriz con la información de los Pokémon.
+    Salidas:
+    - NA
+    """
     try:
         f=open(excelPokemons,"w")
         escritor = csv.writer(f, delimiter=",") #; si el asistente lo quiere ver en diferentes casillas
@@ -90,15 +140,21 @@ excelPokemons = "Mis pokémons.csv"
 ##################################################
 
 def agregarPokemonIDTxt(id, nombre):
+    """
+    Funcionamiento:
+    Agrega un nuevo Pokémon al archivo de texto si no está registrado. Si ya existe, actualiza su información.
+    Entradas:
+    - id (str): ID del Pokémon.
+    - nombre (str): Nombre del Pokémon.
+    Salidas:
+    - NA
+    """
     txtPokemons = leeTxt(misPokemonsTxt)
     listaID = obtenerIDBuscados(txtPokemons)
     nuevoPokemon = f"{id}^{nombre}^a"
-    #print(nuevoPokemon) # Borrar luego -----------------
     txtPokemonsActualizado = ""
     if id not in listaID:
         agregarTxt(misPokemonsTxt, nuevoPokemon)
-        #txtActualizado = leeTxt(misPokemonsTxt) # Borrar luego -----------------
-        #print(txtActualizado) # Borrar luego -----------------
     else:
         listaPokemons = txtPokemons.split("\n")[:-1]
         for pokemon in listaPokemons:
@@ -109,12 +165,19 @@ def agregarPokemonIDTxt(id, nombre):
         print(txtPokemonsActualizado)
 
 def obtenerIDBuscados(txtPokemons):
+    """
+    Funcionamiento:
+    Extrae todos los IDs registrados en el archivo de texto de los Pokémon.
+    Entradas:
+    - txtPokemons (str): Contenido del archivo de texto con datos de Pokémon.
+    Salidas:
+    - list[str]: Lista de IDs extraídos.
+    """
     listaID = []
     listaPokemons = txtPokemons.split("\n")[:-1]
     for pokemon in listaPokemons:
         infoPokemon = pokemon.split("^")
         listaID.append(infoPokemon[0])
-    #print(listaID) # Borrar luego -----------------
     return listaID
     
 ##################################################
@@ -122,6 +185,16 @@ def obtenerIDBuscados(txtPokemons):
 ##################################################
 
 def manipularEstadisticas(cambio, porcentaje, estadisticas):
+    """
+    Funcionamiento:
+    Modifica las estadísticas de un Pokémon según un porcentaje de aumento o disminución.
+    Entradas:
+    - cambio (str): 0 para aumentar, 1 para disminuir.
+    - porcentaje (str): Porcentaje de modificación.
+    - estadisticas (list): Lista con estadísticas del Pokémon: [total, (PS, A, D, AE, DE, V)].
+    Salidas:
+    - list: Nueva lista con total modificado y estadísticas individuales modificadas.
+    """
     listaEstadisticas = []
     porcentaje = int(porcentaje)
     cambio = int(cambio)
@@ -141,6 +214,15 @@ def manipularEstadisticas(cambio, porcentaje, estadisticas):
     return listaEstadisticas
     
 def validarPorcentajeVirus(cambio, porcentaje):
+    """
+    Funcionamiento:
+    Valida que el porcentaje de modificación para el virus sea adecuado.
+    Entradas:
+    - cambio (str): 0 para aumentar, 1 para disminuir.
+    - porcentaje (str): Porcentaje de modificación.
+    Salidas:
+    - tuple: (bool, str) donde el booleano indica si es válido y el string contiene el mensaje de error si lo hay.
+    """
     try:
         if int(porcentaje) < 0: #Si permite +100%
             return (False, "El porcentaje debe de ser mayor a 0.")
@@ -156,6 +238,14 @@ def validarPorcentajeVirus(cambio, porcentaje):
 ##################################################
 
 def obtenerIdShiny(infoAtrapados):
+    """
+    Funcionamiento:
+    Filtra los IDs de Pokémon shiny del diccionario y los agrupa en bloques de 100.
+    Entradas:
+    - infoAtrapados (dict): Diccionario con información de los Pokémon atrapados.
+    Salidas:
+    - matrizShiny (matriz): Lista que contiene sublistas con hasta 100 IDs shiny cada una.
+    """
     listaIdShiny = []
     for id, datos in infoAtrapados.items():
         linkShiny = datos[4]
@@ -217,6 +307,15 @@ defensaEspecial = "special-defense"
 velocidad = "speed"
     
 def validarShiny(info):
+    """
+    Funcionamiento:
+    Verifica si un Pokémon tiene una imagen shiny disponible.
+    Entradas:
+    - info (dict): Diccionario .json con información del Pokémon obtenido desde la API.
+    Salidas:
+    - True si la imagen shiny está disponible (no es None).
+    - False si no tiene imagen shiny.
+    """
     shiny = info['sprites']['front_shiny']
     print(shiny) #Borrar luego, esto es para verificar link shiny ----------------
     if shiny is None:
@@ -225,18 +324,44 @@ def validarShiny(info):
         return True
 
 def obtenerPeso(peso):
+    """
+    Funcionamiento:
+    Convierte el peso recibido (según la API) a gramos.
+    Entradas:
+    - peso (str): peso del Pokémon.
+    Salidas:
+    - Peso convertido en gramos (int).
+    - Si ocurre un error, devuelve 0.
+    """
     try:
         return int(peso) * 10
     except ValueError:
         return 0
     
 def obtenerAltura(altura):
+    """
+    Funcionamiento:
+    Convierte la altura recibida (según la API) a centímetros.
+    Entradas:
+    - altura (int o str): altura del Pokémon.
+    Salidas:
+    - Altura convertida en centímetros (int).
+    - Si ocurre un error, devuelve 0.
+    """
     try:
         return int(altura) * 10
     except ValueError:
         return 0
     
 def obtenerTotalEstadistica(info):
+    """
+    Funcionamiento:
+    Calcula la suma total de las estadísticas base de un Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con información del Pokémon.
+    Salidas:
+    - Suma de las seis estadísticas base (int).
+    """
     salud = obtenerEstadisticaPuntoSalud(info)
     ataque = obtenerEstadisticaAtaque(info)
     defensa = obtenerEstadisticaDefensa(info)
@@ -246,6 +371,16 @@ def obtenerTotalEstadistica(info):
     return salud + ataque + defensa + ataqueEspecial + defensaEspecial + velocidad
 
 def obtenerEstadistica(info, tipo):
+    """
+    Funcionamiento:
+    Obtiene el valor base de una estadística específica de un Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con información del Pokémon.
+    - tipo (str): Nombre de la estadística.
+    Salidas:
+    - Valor entero de la estadística base solicitada.
+    - Si no se encuentra la estadística, devuelve 0.
+    """
     estadisticas = info['stats']
     for estadistica in estadisticas:
         if estadistica['stat']['name'] == tipo:
@@ -253,30 +388,96 @@ def obtenerEstadistica(info, tipo):
     return 0
 
 def obtenerEstadisticaPuntoSalud(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de Puntos de Salud (HP) del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - Valor entero de HP.
+    """
     return obtenerEstadistica(info, puntosSalud)
 
 def obtenerEstadisticaAtaque(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de ataque del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - Valor entero de ataque.
+    """
     return obtenerEstadistica(info, ataque)
 
 def obtenerEstadisticaDefensa(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de defensa del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - Valor entero de defensa.
+    """
     return obtenerEstadistica(info, defensa)
 
 def obtenerEstadisticaAtaqueEspecial(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de ataque especial del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - Valor entero de Ataque Especial.
+    """
     return obtenerEstadistica(info, ataqueEspecial)
 
 def obtenerEstadisticaDefensaEspecial(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de Defensa Especial del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - Valor entero de Defensa Especial.
+    """
     return obtenerEstadistica(info, defensaEspecial)
 
 def obtenerEstadisticaVelocidad(info):
+    """
+    Funcionamiento:
+    Obtiene la estadística base de Velocidad del Pokémon.
+    Entradas:
+    - info (dict): Diccionario .josn con la información del Pokémon.
+    Salidas:
+    - Valor entero de Velocidad.
+    """
     return obtenerEstadistica(info, velocidad)
 
 def obtenerTipo(info, indice):
+    """
+    Funcionamiento:
+    Obtiene el nombre del tipo del Pokémon según el índice.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    - indice (int): índice para acceder al tipo (0 para primer tipo, 1 para segundo tipo, etc.)
+    Salidas:
+    - String con el nombre del tipo si existe; si no, string vacío.
+    """
     try:
         return info['types'][indice]['type']['name']
     except IndexError:
         return "" # Mostrar un String vacio cuando no encuentra el indice
     
 def obtenerImagen(info):
+    """
+    Funcionamiento:
+    Obtiene la URL de la imagen del Pokémon.
+    Prefiere la imagen shiny si está disponible; si no, devuelve la imagen normal.
+    Entradas:
+    - info (dict): Diccionario .json con la información del Pokémon.
+    Salidas:
+    - URL (string) de la imagen shiny si existe, o imagen normal en caso contrario.
+    """
     shiny = validarShiny(info)
     if shiny == True:
         return info['sprites']['front_shiny']
@@ -284,7 +485,15 @@ def obtenerImagen(info):
         return info['sprites']['front_default']
 
 def obtenerPokemonsAtrapados(listaRandomAtrapados):
-    # Crear el diccionario
+    """
+    Funcionamiento:
+    Obtiene información detallada de los Pokémon atrapados consultando la API.
+    Construye un diccionario con datos relevantes y lo guarda.
+    Entradas:
+    - listaRandomAtrapados (list): Lista de cadenas con formato "id^nombre^estado" de Pokémon atrapados.
+    Salidas:
+    - Guarda el diccionario de Pokémon en un archivo binario.
+    """
     diccionarioPokemons = {}
     for pokemon in listaRandomAtrapados:
         id = pokemon.split("^")[0] # Obtener el id del Pokemon
@@ -298,7 +507,6 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
             defensaEspecial = obtenerEstadisticaDefensaEspecial(info)
             velocidad = obtenerEstadisticaVelocidad(info)
             totalStats = obtenerTotalEstadistica(info)
-            info = respuesta.json()
             # Asignar el valor al pokemon
             diccionarioPokemons[int(id)] = [info['name'], # nombre
                                              (validarShiny(info), obtenerPeso(info['weight']), obtenerAltura(info['height'])), # (esShiny, peso, altura)
@@ -308,12 +516,19 @@ def obtenerPokemonsAtrapados(listaRandomAtrapados):
                                             ]
         else:
             print("Error", respuesta.status_code)
-    # Guardar el archivo
     graba(misPokemonsAtrapadosPkl, diccionarioPokemons) # Lo guardamos en memoria secundaria con el fin de hacerlo más eficiente.
     pokemonsAtrapados = lee(misPokemonsAtrapadosPkl) # Borrar luego -----------------
     print(pokemonsAtrapados) # Borrar luego -----------------
 
 def obtenerIdAtrapados(listaRandomAtrapados):
+    """
+    Funcionamiento:
+    Extrae los IDs de los Pokémon atrapados de la lista dada y los guarda en un archivo.
+    Entradas:
+    - listaRandomAtrapados (list): Lista de cadenas con formato "id^nombre^estado".
+    Salidas:
+    - Guarda la lista de IDs en un archivo binario.
+    """
     listaIdAtrapados = []
     for pokemon in listaRandomAtrapados:
         infoPokemon = pokemon.split("^")
@@ -322,6 +537,15 @@ def obtenerIdAtrapados(listaRandomAtrapados):
     graba(misIdAtrapados, listaIdAtrapados)
 
 def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
+    """
+    Funcionamiento:
+    Actualiza el archivo de texto que almacena el estado de cada Pokémon, 
+    Entradas:
+    - listaPokemons (list): Lista de cadenas "id^nombre^estado" con estado anterior.
+    - listaRandomAtrapados (list): Lista de cadenas "id^nombre^estado" que representa los atrapados actuales.
+    Salidas:
+    - Guarda el archivo de texto actualizado con los nuevos estados.
+    """
     misPokemons = ""
     for pokemon in listaPokemons:
         if pokemon in listaRandomAtrapados:
@@ -332,6 +556,14 @@ def actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados):
     grabaTxt(misPokemonsTxt, misPokemons)
     
 def validarPorcentaje(porcentaje):
+    """
+    Funcionamiento:
+    Valida que el porcentaje ingresado sea un número entero entre 0 y 100.
+    Entradas:
+    - porcentaje (str): Valor a validar.
+    Salidas:
+    - tuple(bool, str): (True, "") si válido; (False, mensaje de error) si inválido.
+    """
     try:
         if int(porcentaje) < 0 or int(porcentaje) > 100:
             return (False, "El porcentaje debe de ser entre 0 y 100.")
@@ -345,8 +577,17 @@ def validarPorcentaje(porcentaje):
 ##################################################
 
 def obtenerLimitePokemon():
+    """
+    Funcionamiento:
+    Consulta la API de Pokémon para obtener el número total de Pokémon disponibles.
+    Entradas:
+    - NA
+    Salidas:
+    - int: Cantidad total de Pokémon disponibles en la API.
+    """
     url = "https://pokeapi.co/api/v2/pokemon"
     respuesta = requests.get(url)
     if respuesta.status_code == 200:
         datos = respuesta.json()
         return datos["count"]
+    return False

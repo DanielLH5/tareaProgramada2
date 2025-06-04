@@ -263,6 +263,17 @@ def obtenerIdShiny(infoAtrapados):
 ##################################################
 
 def obtenerEstadisticas(nombrePokemon):
+    """
+    Funcionamiento:
+    Desde el API, pide todas las estadísticas de el pokémon que ingrese a la función.
+    Restricciones:
+    Se decidió hacer un diccionario con nombres corregidos ya que se guardan con un nombre en la base de datos,
+    pero en la URL debe tener el nombre distinto (corregido) o no será encontrado.
+    Entradas:
+    - Nombre del pokémon a solicitar sus estadísticas
+    Salidas:
+    - Devuelve la estadísticas totales del pokémon.
+    """
     nombresCorregidos = {'kakun': 'kakuna','nidorin': 'nidorina','sandslas': 'sandslash','oddis': 'oddish','venomot': 'venomoth',
     'meowt': 'meowth','abr': 'abra','kadabr': 'kadabra','ponyt': 'ponyta','rapidas': 'rapidash','rattat': 'rattata',
     'poliwrat': 'poliwrath','tangel': 'tangela','horse': 'horsea','seadr': 'seadra','chikorit': 'chikorita','quilav': 'quilava',
@@ -290,10 +301,10 @@ def obtenerEstadisticas(nombrePokemon):
             return total #Retorna el total de estadisticas del pokémon específico
         else:
             print(f"No se encontró el Pokémon: {nombrePokemon}")
-            return 0
+            return 0 #En caso de no encontrarse, sus estadísticas serán cero
     except Exception as e:
         print(f"Error al obtener stats de {nombrePokemon}: {e}")
-        return 0
+        return 0 #En caso de no encontrarse, sus estadísticas serán cero
     
 ##################################################
 # 2. Atrapar

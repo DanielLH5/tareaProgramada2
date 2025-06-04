@@ -446,6 +446,16 @@ def crarArchivoShiny():
 # 7. HTML escapados.
 ##################################################
 def generarHtmlDesdeXml():
+    """
+    Funcionamiento:
+    Lee el archivo XML y generan HTMLs con un límite de 100 pokémons por cada archivo,
+    estos se ordenan por mayor estadística total de cada pokémon.
+    Entradas:
+    - NA
+    Salidas:
+    - Archivos HTML llamados "huyeron1.html", "huyeron2.html", etc.
+    - Ventana de confirmación que indica el éxito de la creación.
+    """
     archivoXml = "pokemons.xml"
     with open(archivoXml, 'r', encoding='utf-8') as f:
         lineas = f.readlines()
@@ -506,6 +516,15 @@ def generarHtmlDesdeXml():
 ##################################################
 
 def generarXml():
+    """
+    Funcionamiento:
+    Genera un XML que muestra el total de estadísticas de todos los pokémons que huyeron.
+    Entradas:
+    - NA
+    Salidas:
+    - Archivo xml llamado "pokemons.xml".
+    - Ventana de confirmación que indica el éxito de la creación.
+    """
     lineasPokemons = leeTxtLineas(misPokemonsTxt)
     pokemonsXml = "pokemons.xml"
     pokemonsHuyeron = [] #Lista nueva para guardar solo los que huyeron
@@ -521,7 +540,7 @@ def generarXml():
             if estado == 'h':  #Solo los que huyeron
                 try:
                     idPokemon = int(idStr)
-                    totalEstadisticas = obtenerEstadisticas(nombre)
+                    totalEstadisticas = obtenerEstadisticas(nombre) #Llama la función que obtiene estadísticas
                     pokemonsHuyeron.append((idPokemon, nombre, totalEstadisticas))
                 except ValueError:
                     pass #Ignora si no es número
@@ -576,7 +595,15 @@ def crearMatrizPokemons():
 # 4. Detalle
 ##################################################
 
-def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
+def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, estadisticas):
+    """
+    Funcionamiento:
+    Muestra los detalles, el nombre y la imagen del pokémon seleccionado en la pokédex.
+    Entradas:
+    - clave, nombre, shiny, peso, altura, tipos, estadisticas
+    Salidas:
+    - Abre una ventana que muestra todos los detalles del pokémon seleccionado.
+    """
     ventana = tk.Toplevel()
     ventana.geometry("300x380") 
     ventana.title(f"{nombre.capitalize()} - Detalles")
@@ -599,20 +626,27 @@ def mostrarDetalles(clave, nombre, shiny, peso, altura, tipos, stats):
     if tipos:
         tiposStr = ", ".join(tipos)
         tk.Label(ventana, text=f"Tipos: {tiposStr}").pack()
-    nombresStats = ["HP", "Ataque", "Defensa", "Ataque Esp", "Defensa Esp", "Velocidad"]
-    for i in range(len(stats)):
-        tk.Label(ventana, text=f"{nombresStats[i]}: {stats[i]}").pack()
+    nombresEstadisticas = ["HP", "Ataque", "Defensa", "Ataque Esp", "Defensa Esp", "Velocidad"]
+    for i in range(len(estadisticas)):
+        tk.Label(ventana, text=f"{nombresEstadisticas[i]}: {estadisticas[i]}").pack()
     tk.Button(ventana, text="Cerrar", command=ventana.destroy).pack(pady=10)
 
 ##################################################
 # 3. Pokédex
 ##################################################
-
-def mostrarPagina(ventana, frame, pokemons, pagina):
-    for widget in frame.winfo_children():
+def mostrarPagina(ventana, pagina, pokemons, paginaActual):
+    """
+    Funcionamiento:
+    Muestra las imágenes y los nombres de cada pokémon en la ventana pokédex, con un límite de 25 por página.
+    Entradas:
+    - ventana, pagina, pokemons, paginaActual
+    Salidas:
+    - Muestra todos los pokémons en la página de la pokédex.
+    """
+    for widget in pagina.winfo_children():
         widget.destroy()
     claves = sorted(pokemons.keys())
-    inicio = pagina * 25
+    inicio = paginaActual * 25
     fin = inicio + 25
     subset = claves[inicio:fin]
     fila, columna = 0, 0
@@ -633,45 +667,70 @@ def mostrarPagina(ventana, frame, pokemons, pagina):
             foto = ImageTk.PhotoImage(imagen)
         except:
             foto = None
-        framePoke = tk.Frame(frame)
-        framePoke.grid(row=fila, column=columna, padx=10, pady=10)
+        paginaPokedex = tk.Frame(pagina)
+        paginaPokedex.grid(row=fila, column=columna, padx=10, pady=10)
         if foto:
-            labelImagen = tk.Label(framePoke, image=foto)
+            labelImagen = tk.Label(paginaPokedex, image=foto)
             labelImagen.image = foto #Mantener referencia
             labelImagen.pack()
             labelImagen.bind(
                 "<Button-1>",
                 lambda e, c=clave, n=nombre, s=shiny, p=peso, a=altura, t=tipos, est=estadisticas: 
                 mostrarDetalles(c, n, s, p, a, t, est)) #Se actualizan los valores y se envían para mostrar
-        tk.Label(framePoke, text=nombre).pack()
+        tk.Label(paginaPokedex, text=nombre).pack()
         columna += 1
         if columna == 5:
             columna = 0
             fila += 1          
 
-def avanzar(ventana, frame, pokemons, paginaActualVar):
+def avanzar(ventana, pagina, pokemons, paginaActual):
+    """
+    Funcionamiento:
+    Botón de avance sobre la ventana de pokédex, permite avanzar en las páginas creadas.
+    Entradas:
+    - ventana, pagina, pokemons, paginaActual
+    Salidas:
+    - Indicación de avanzar a la siguiente página de la ventana pokédex.
+    """
     totalPaginas = (len(pokemons) - 1) // 25
-    if paginaActualVar.get() < totalPaginas:
-        paginaActualVar.set(paginaActualVar.get() + 1)
-        mostrarPagina(ventana, frame, pokemons, paginaActualVar.get())
+    if paginaActual.get() < totalPaginas: #Si no es la última ventana
+        paginaActual.set(paginaActual.get() + 1)
+        mostrarPagina(ventana, pagina, pokemons, paginaActual.get())
 
-def retroceder(ventana, frame, pokemons, paginaActualVar):
-    if paginaActualVar.get() > 0:
-        paginaActualVar.set(paginaActualVar.get() - 1)
-        mostrarPagina(ventana, frame, pokemons, paginaActualVar.get())
+def retroceder(ventana, pagina, pokemons, paginaActual):
+    """
+    Funcionamiento:
+    Botón de retroceso sobre la ventana de pokédex, permite retroceder en las páginas creadas.
+    Entradas:
+    - ventana, pagina, pokemons, paginaActual
+    Salidas:
+    - Indicación de retroceder a la anterior página de la ventana pokédex.
+    """
+    if paginaActual.get() > 0: #Si la ventana no es la ventana cero
+        paginaActual.set(paginaActual.get() - 1)
+        mostrarPagina(ventana, pagina, pokemons, paginaActual.get())
 
 def ventanaPokedex():
+    """
+    Funcionamiento:
+    Ventana principal de la pokédex, muestra 25 pokémons por página como máximo.
+    Si se hace click, muestra la información individual de ese pokémon.
+    Entradas:
+    - NA
+    Salidas:
+    - Ventana con interfaz gráfica.
+    """
     pokemonsLista = lee(misPokemonsAtrapadosPkl)
     ventana = tk.Toplevel()
     ventana.title("Pokédex")
-    frame = tk.Frame(ventana)
-    frame.pack()
-    paginaActualVar = tk.IntVar(value=0)
+    pagina = tk.Frame(ventana)
+    pagina.pack()
+    paginaActual = tk.IntVar(value=0)
     controles = tk.Frame(ventana)
     controles.pack()
-    tk.Button(controles, text="<<", command=lambda: retroceder(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.LEFT, padx=10)
-    tk.Button(controles, text=">>", command=lambda: avanzar(ventana, frame, pokemonsLista, paginaActualVar)).pack(side=tk.RIGHT, padx=10)
-    mostrarPagina(ventana, frame, pokemonsLista, paginaActualVar.get())
+    tk.Button(controles, text="<<", command=lambda: retroceder(ventana, pagina, pokemonsLista, paginaActual)).pack(side=tk.LEFT, padx=10)
+    tk.Button(controles, text=">>", command=lambda: avanzar(ventana, pagina, pokemonsLista, paginaActual)).pack(side=tk.RIGHT, padx=10)
+    mostrarPagina(ventana, pagina, pokemonsLista, paginaActual.get())
 
 ##################################################
 # 2. Atrapar

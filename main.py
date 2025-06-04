@@ -544,7 +544,9 @@ def atraparPokemons(porcentaje): #Se queda
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
     print(listaPokemons) # Luego borrarlo ----------------
     # Obtener la cantidad de Pokemons atrapados, según el porcentaje
-    cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
+    cantidadPokemonsAtrapados = int(len(listaPokemons) * (int(porcentaje) / 100))
+    if cantidadPokemonsAtrapados == 0 and int(porcentaje) > 0: #Arreglado, antes no permitía si eran menos de 100
+        cantidadPokemonsAtrapados = 1
     # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados
     listaRandomAtrapados = random.sample(listaPokemons, cantidadPokemonsAtrapados)
     print(listaRandomAtrapados) # Borrar luego -----------------

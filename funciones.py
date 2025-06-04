@@ -270,6 +270,17 @@ def obtenerIdShiny(infoAtrapados):
 ##################################################
 
 def obtenerEstadisticas(nombrePokemon):
+    """
+    Funcionamiento:
+    Desde el API, pide todas las estadísticas de el pokémon que ingrese a la función.
+    Restricciones:
+    Se decidió hacer un diccionario con nombres corregidos ya que se guardan con un nombre en la base de datos,
+    pero en la URL debe tener el nombre distinto (corregido) o no será encontrado.
+    Entradas:
+    - Nombre del pokémon a solicitar sus estadísticas
+    Salidas:
+    - Devuelve la estadísticas totales del pokémon.
+    """
     nombresCorregidos = {'kakun': 'kakuna','nidorin': 'nidorina','sandslas': 'sandslash','oddis': 'oddish','venomot': 'venomoth',
     'meowt': 'meowth','abr': 'abra','kadabr': 'kadabra','ponyt': 'ponyta','rapidas': 'rapidash','rattat': 'rattata',
     'poliwrat': 'poliwrath','tangel': 'tangela','horse': 'horsea','seadr': 'seadra','chikorit': 'chikorita','quilav': 'quilava',
@@ -286,21 +297,21 @@ def obtenerEstadisticas(nombrePokemon):
     "alomomol": "alomomola","galvantul": "galvantula","larvest": "larvesta","volcaron": "volcarona","meloetta-ari": "meloetta",
     "greninj": "greninja","spewp": "spewpa","amaur": "amaura"} #Diccionario con nombres corregidos, para que se encuentren en el API.
     nombreCorregido = nombresCorregidos.get(nombrePokemon.lower(), nombrePokemon.lower())
-    url = f"https://pokeapi.co/api/v2/pokemon/{nombreCorregido}"
+    url = f"https://pokeapi.co/api/v2/pokemon/{nombreCorregido}" #Busca en la API el pokémon con el nombre correcto
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
+        respuesta = requests.get(url)
+        if respuesta.status_code == 200: #Saca los datos de ese pokémon
+            datos = respuesta.json()
             total = 0
-            for stat in data['stats']:
-                total += stat['base_stat']
-            return total
+            for estadistica in datos['stats']:
+                total += estadistica['base_stat']
+            return total #Retorna el total de estadisticas del pokémon específico
         else:
             print(f"No se encontró el Pokémon: {nombrePokemon}")
-            return 0
+            return 0 #En caso de no encontrarse, sus estadísticas serán cero
     except Exception as e:
         print(f"Error al obtener stats de {nombrePokemon}: {e}")
-        return 0
+        return 0 #En caso de no encontrarse, sus estadísticas serán cero
     
 ##################################################
 # 2. Atrapar

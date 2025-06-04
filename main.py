@@ -5,9 +5,6 @@
 #Versión: 3.13.3
 ###########################################################
 
-"""
-python -m pip install requests
-"""
 import tkinter as tk
 import requests
 import random 
@@ -319,9 +316,7 @@ def matrizADicc():
         mensaje = "Los cambios han sido guardados"
         ventanaConfirmacion(mensaje)
         print(diccPokemon)
-        # Aquí puedes reactivar botones u otras acciones
     ventanaAprobacion(guardarDicc)
-    #Volver a activar todos los botones que requerían de dicc
 
 ##################################################
 # 9. Convertidor
@@ -359,9 +354,7 @@ def diccAMatriz():
         mensaje = "Los cambios han sido guardados"
         ventanaConfirmacion(mensaje)
         print(matrizPokemons)
-        # Aquí puedes reactivar botones u otras acciones
     ventanaAprobacion(guardarMatriz)
-    #Deshabilitar los botones que requieran del diccionario
 
 ##################################################
 # 8. esShiny
@@ -421,7 +414,7 @@ def crarArchivoShiny():
             <th>Tipos</th>
             <th>Imagen</th>
         </tr>""")
-                for id in lista: #Cada bloque
+                for id in lista: # Cada bloque
                     archivo.write(f"""
     <tr>
         <td>{id}</td>
@@ -505,7 +498,7 @@ def generarHtmlDesdeXml():
 def generarXml():
     lineasPokemons = leeTxtLineas(misPokemonsTxt)
     pokemonsXml = "pokemons.xml"
-    pokemonsHuyeron = []  #Lista nueva para guardar solo los que huyeron
+    pokemonsHuyeron = []  # Lista nueva para guardar solo los que huyeron
     def aprobacionXml():
         for linea in lineasPokemons:
             linea = linea.strip()
@@ -515,13 +508,13 @@ def generarXml():
             if len(partes) != 3:
                 continue
             idStr, nombre, estado = partes
-            if estado == 'h':  #Solo los que huyeron
+            if estado == 'h':  # Solo los que huyeron
                 try:
                     idPokemon = int(idStr)
                     totalEstadisticas = obtenerEstadisticas(nombre)
                     pokemonsHuyeron.append((idPokemon, nombre, totalEstadisticas))
                 except ValueError:
-                    pass  #Ignorar si no es número
+                    pass  # Ignorar si no es número
         lineasXml = ['<Pokemons>']
         for idP, nombre, total in pokemonsHuyeron:
             lineasXml.append(f'  <Pokemon id="{idP}">')
@@ -687,12 +680,10 @@ def atraparPokemons(porcentaje):
     """
     archivoPokemons = leeTxt(misPokemonsTxt)
     listaPokemons = archivoPokemons.split("\n")[:-1] # Omitir el último salto de linea
-    print(listaPokemons) # Luego borrarlo ----------------
     # Obtener la cantidad de Pokemons atrapados, según el porcentaje
     cantidadPokemonsAtrapados = int(len(listaPokemons) / 100) * int(porcentaje)
     # Obtener las muestras de manera aleatoria, pasando la lista de Pokemons y la cantidad de Pokemons atrapados
     listaRandomAtrapados = random.sample(listaPokemons, cantidadPokemonsAtrapados)
-    print(listaRandomAtrapados) # Borrar luego -----------------
     actualizarPokemonsTxt(listaPokemons, listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
     obtenerIdAtrapados(listaRandomAtrapados)
     obtenerPokemonsAtrapados(listaRandomAtrapados) # Actualizar el archivo "Mis Pokemons"
